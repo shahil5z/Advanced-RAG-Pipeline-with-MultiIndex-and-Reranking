@@ -36,15 +36,8 @@ These Word documents contain the final output generated from the retrieved conte
 1. Clone the Repository
 2. Install Dependencies
 3. Set Environment Variables
-4. Create a .env file with your API key
--OPENAI_API_KEY=your_openai_key
--LANGCHAIN_API_KEY=your_langchain_key
--GROQ_API_KEY=your_groq_key
--HF_TOKEN=your_huggingface_token
--GOOGLE_API_KEY=your_google_key
--PINECONE_API_KEY=your_pinecone_key
-
-4. Run the Notebooks
+4. Add your API keys in .env file
+5. Run the Notebooks
 - Execute `rag_NOTEBOOK.ipynb` for initial RAG setup.
 - Run `assignment.ipynb` for the full implementation.
 
@@ -56,3 +49,7 @@ All three FAISS index types were tested and compared based on retrieval speed an
 
 - Executable notebooks
 - DOCX reports with LLM-generated content
+
+
+
+## By Shohrab Haque Shahil
