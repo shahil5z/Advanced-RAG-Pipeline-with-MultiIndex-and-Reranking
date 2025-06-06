@@ -38,8 +38,8 @@ These Word documents contain the final output generated from the retrieved conte
 3. Set Environment Variables
 4. Add your API keys in .env file
 5. Run the Notebooks
-- Execute `rag_NOTEBOOK.ipynb` for initial RAG setup.
-- Run `assignment.ipynb` for the full implementation.
+- Complete RAG NOTEBOOK `rag_NOTEBOOK.ipynb` .
+- Execute `assignment.ipynb` for initial RAG setup and full implementation.
 
 ## Retrieval Benchmarking
 
