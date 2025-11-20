@@ -2,6 +2,16 @@
 
 This project implements a complete Retrieval-Augmented Generation (RAG) pipeline using multiple PDF files containing text, images, and tables. The pipeline includes semantic chunking, embedding using HuggingFace models, and storage in vector databases. It supports three FAISS-based indexing strategies (Flat, HNSW, and IVF) to evaluate retrieval speed and accuracy. Additionally, it integrates reranking using BM25, prompt engineering for LLM-based generation, and exports results into DOCX reports.
 
+## Report Sample
+
+<p align="center">
+  <img src="https://github.com/shahil5z/Advanced-RAG-Pipeline-with-MultiIndex-and-Reranking/blob/d5b6076d3a450ca767fe75b533dac96ebc1a4f2b/IMG/Report%201.png" width="500">
+</p>
+
+<p align="center">
+  <img src="https://github.com/shahil5z/Advanced-RAG-Pipeline-with-MultiIndex-and-Reranking/blob/d5b6076d3a450ca767fe75b533dac96ebc1a4f2b/IMG/Report%202.png" width="500">
+</p>
+
 ## Features
 
 - Parses large PDF documents (over 200 pages)
