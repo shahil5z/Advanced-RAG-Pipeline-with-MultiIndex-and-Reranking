@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pymupdf
 import pytest
@@ -174,3 +176,90 @@ def test_pipeline_retrieve_does_not_call_the_generator(tmp_path):
     result = pipeline.query("What is diabetes?")
     assert "blood glucose" in result.answer
     assert result.citations[0].chunk_id == chunks[0].chunk_id
+
+
+class _KeywordEmbedder:
+    """A stand-in embedder so ingestion, FAISS, and BM25 can run without the model."""
+
+    vocab = ("flat", "hnsw", "ivf", "bm25", "recall", "openai", "neighbors", "lists")
+
+    def embed_documents(self, texts):
+        return np.vstack([self.embed_query(text) for text in texts])
+
+    def embed_query(self, text):
+        tokens = text.lower().replace("?", " ").replace(".", " ").split()
+        vector = np.zeros(len(self.vocab), dtype=np.float32)
+        for index, word in enumerate(self.vocab):
+            if any(token.startswith(word) for token in tokens):
+                vector[index] = 1
+        if float(vector.sum()) == 0:
+            vector[-1] = 0.01
+        return vector
+
+
+class _EchoGenerator:
+    def generate(self, query, contexts):
+        return contexts[0].text if contexts else ""
+
+
+def test_lab_notes_ingest_index_retrieve_and_rerank():
+    path = Path("data/demo/lab-notes.pdf")
+    assert path.is_file()
+    pipeline = RAGPipeline(
+        RAGConfig(
+            input_paths=[str(path)],
+            index_type="flat",
+            top_k=2,
+            reranking=True,
+            chunk_size=500,
+            chunk_overlap=0,
+        ),
+        generator=_EchoGenerator(),
+        embedder=_KeywordEmbedder(),
+    )
+    retrieved, latency = pipeline.retrieve("How many neighbors does each HNSW node keep in this lab?")
+    assert latency >= 0
+    assert retrieved[0].document_id == "lab-notes.pdf"
+    assert retrieved[0].score_type == "bm25"
+    assert "32" in retrieved[0].text
+    answer = pipeline.query("How many neighbors does each HNSW node keep in this lab?")
+    assert "32" in answer.answer
+    assert answer.citations[0].page == retrieved[0].page
+
+    plain = RAGPipeline(
+        RAGConfig(
+            input_paths=[str(path)],
+            index_type="hnsw",
+            top_k=2,
+            reranking=False,
+            chunk_size=500,
+            chunk_overlap=0,
+        ),
+        generator=_EchoGenerator(),
+        embedder=_KeywordEmbedder(),
+    )
+    hits, _ = plain.retrieve("How many neighbors does each HNSW node keep in this lab?")
+    assert hits[0].score_type == "l2_distance"
+    assert "HNSW" in hits[0].text
+
+    with pytest.raises(ValueError):
+        plain.retrieve("   ")
+
+
+def test_lab_notes_ivf_refuses_when_the_corpus_is_smaller_than_nlist():
+    pipeline = RAGPipeline(
+        RAGConfig(
+            input_paths=["data/demo/lab-notes.pdf"],
+            index_type="ivf",
+            ivf_nlist=100,
+            ivf_nprobe=10,
+            top_k=2,
+            reranking=False,
+            chunk_size=500,
+            chunk_overlap=0,
+        ),
+        generator=_EchoGenerator(),
+        embedder=_KeywordEmbedder(),
+    )
+    with pytest.raises(ValueError, match="IVF needs"):
+        pipeline.retrieve("How many lists does IVF search?")

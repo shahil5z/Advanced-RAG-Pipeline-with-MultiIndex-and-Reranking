@@ -26,15 +26,24 @@ The OpenAI judge is optional, cached, and was not used for the stored table.
 
 ## Public site
 
-`web/` is Next.js. It does not run the local stack.
+`web/` is Next.js. Deploy it with the Vercel project root set to `web`. The settings and environment variables are in `docs/VERCEL.md`.
 
 ```text
-Browser -> static pages
-        -> six prepared traces from data/demo/lab-notes.pdf
-        -> web/data/benchmark.json copied from the local run
+Browser -> pages
+        -> POST /api/query
+              -> six lab-note passages
+              -> hashed token vectors, or OpenAI embeddings when OPENAI_API_KEY is set
+              -> exact L2 search
+              -> optional BM25 rerank
+              -> quoted passage, or OpenAI generation when the key is set
+        -> /evaluation reads web/data/benchmark.json from the local FAISS run
 ```
 
-There is no browser access to `OPENAI_API_KEY`, no caller-supplied path, and no caller-supplied model name. The source PDFs are not required to open the site.
+PyTorch, sentence-transformers, and FAISS stay in the local package. A default serverless function would have to download `all-MiniLM-L6-v2` and ship those wheels. The public flat index uses hashed token vectors instead, so the demo retrieves and reranks with no key. `OPENAI_API_KEY` is optional and is read only on the server. The browser never receives it, and the caller cannot choose a filesystem path or a model name.
+
+The content security policy allows Next.js inline bootstrap scripts. `script-src 'self'` on its own blocks hydration, and the demo controls then do nothing.
+
+Page numbers in the demo are zero-based, matching the evaluation labels. The benchmark PDFs are not required to open the site.
 
 ## What is not deterministic
 

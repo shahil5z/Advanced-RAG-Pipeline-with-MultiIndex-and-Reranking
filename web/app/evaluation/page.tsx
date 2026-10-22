@@ -1,87 +1,125 @@
-import benchmark from "@/data/benchmark.json";
+import type { Metadata } from "next";
 
-type Experiment = {
-  name: string;
-  recall_at_k: number;
-  precision_at_k: number;
-  mrr: number;
-  ndcg: number;
-  citation_precision: number;
-  retrieval_mean_ms: number;
-  retrieval_p50_ms: number;
-  questions: number;
-  k: number;
+import { experimentLabel, experiments, findExperiment } from "@/lib/benchmark";
+
+export const metadata: Metadata = {
+  title: "Evaluation",
+  description: "Page-level Recall, MRR, nDCG, and citation precision for Flat, HNSW, and IVF.",
 };
 
-const rows = benchmark.experiments as Experiment[];
-
 export default function EvaluationPage() {
-  if (rows.length === 0) {
+  if (experiments.length === 0) {
     return (
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold">Evaluation</h1>
-        <p className="text-sm">No evaluation results are available. Run a local evaluation to populate this view.</p>
+      <div className="space-y-3">
+        <h1 className="text-4xl">Evaluation</h1>
+        <p className="rounded-lg border border-dashed border-line bg-card px-4 py-6 text-sm leading-6 text-muted">
+          No evaluation results are available. Run a local evaluation to populate this view.
+        </p>
       </div>
     );
   }
-  const maxLatency = Math.max(...rows.map((row) => row.retrieval_p50_ms), 1);
+
+  const flat = findExperiment("flat_baseline");
+  const plain = findExperiment("flat_no_rerank");
+  const ivf = findExperiment("ivf");
+  const hnsw = findExperiment("hnsw");
+  const sample = experiments[0];
+  const maxMrr = Math.max(...experiments.map((row) => row.mrr), 0.01);
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Evaluation</h1>
-      <p className="text-sm text-stone-700">
-        Page-level retrieval on {rows[0].questions} reviewed questions. K is {rows[0].k}. These figures are from the local benchmark, not from the public demo corpus. LLM-judge scores were not measured.
-      </p>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
+    <div className="space-y-8">
+      <header className="max-w-2xl space-y-3">
+        <h1 className="text-4xl">Evaluation</h1>
+        <p className="text-base leading-7 text-muted">
+          Page-level retrieval on {sample.questions} reviewed questions. K is {sample.k}. These figures are the local FAISS benchmark
+          with {sample.embedding_model}, chunk size {sample.chunk_size}. Judge scores were not part of this run.
+        </p>
+      </header>
+
+      <div className="overflow-x-auto rounded-lg border border-line bg-card">
+        <table className="w-full min-w-[44rem] border-collapse text-sm">
+          <caption className="px-4 py-3 text-left text-sm text-muted">
+            Retrieval metrics. Citation precision uses the number of distinct cited pages as the denominator.
+          </caption>
           <thead>
-            <tr className="border-b border-stone-400 text-left">
-              <th className="py-2 pr-3">Configuration</th>
-              <th className="py-2 pr-3">Recall</th>
-              <th className="py-2 pr-3">MRR</th>
-              <th className="py-2 pr-3">nDCG</th>
-              <th className="py-2 pr-3">Citation precision</th>
-              <th className="py-2">Median retrieval</th>
+            <tr className="border-b border-line text-left">
+              <th scope="col" className="px-4 py-2 font-semibold">
+                Configuration
+              </th>
+              <th scope="col" className="px-3 py-2 font-semibold">
+                Recall
+              </th>
+              <th scope="col" className="px-3 py-2 font-semibold">
+                Precision
+              </th>
+              <th scope="col" className="px-3 py-2 font-semibold">
+                MRR
+              </th>
+              <th scope="col" className="px-3 py-2 font-semibold">
+                nDCG
+              </th>
+              <th scope="col" className="px-3 py-2 font-semibold">
+                Citation precision
+              </th>
+              <th scope="col" className="px-4 py-2 font-semibold">
+                Median retrieval
+              </th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.name} className="border-b border-stone-200">
-                <td className="py-2 pr-3">{row.name}</td>
-                <td className="py-2 pr-3">{row.recall_at_k.toFixed(3)}</td>
-                <td className="py-2 pr-3">{row.mrr.toFixed(3)}</td>
-                <td className="py-2 pr-3">{row.ndcg.toFixed(3)}</td>
-                <td className="py-2 pr-3">{row.citation_precision.toFixed(3)}</td>
-                <td className="py-2">{row.retrieval_p50_ms.toFixed(1)} ms</td>
+            {experiments.map((row) => (
+              <tr key={row.name} className="border-b border-line last:border-0">
+                <th scope="row" className="px-4 py-3 text-left font-semibold">
+                  {experimentLabel(row.name)}
+                </th>
+                <td className="px-3 py-3 tabular-nums">{row.recall_at_k.toFixed(3)}</td>
+                <td className="px-3 py-3 tabular-nums">{row.precision_at_k.toFixed(3)}</td>
+                <td className="px-3 py-3 tabular-nums">{row.mrr.toFixed(3)}</td>
+                <td className="px-3 py-3 tabular-nums">{row.ndcg.toFixed(3)}</td>
+                <td className="px-3 py-3 tabular-nums">{row.citation_precision.toFixed(3)}</td>
+                <td className="px-4 py-3 tabular-nums">{row.retrieval_p50_ms.toFixed(1)} ms</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <section>
-        <h2 className="font-semibold">Quality and latency</h2>
-        <svg viewBox="0 0 320 180" className="mt-3 w-full max-w-md border border-stone-300 bg-white" role="img" aria-label="Recall against mean retrieval latency">
-          {rows.map((row) => {
-            const x = 40 + (row.retrieval_p50_ms / maxLatency) * 250;
-            const y = 150 - row.recall_at_k * 130;
-            return (
-              <g key={row.name}>
-                <circle cx={x} cy={y} r="4" fill="#1c1b19" />
-                <text x={x + 6} y={y} fontSize="10">
-                  {row.name}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-        <p className="mt-1 text-xs text-stone-600">
-          Horizontal position is median retrieval time. Vertical position is recall. These gaps are about 1 ms on this corpus.
+
+      <section className="max-w-2xl space-y-4">
+        <h2 className="text-2xl">MRR by configuration</h2>
+        <p className="text-sm leading-6 text-muted">
+          Median retrieval on this corpus sits within about a millisecond across the four runs, so the chart shows MRR, the metric BM25 moved.
         </p>
+        <div className="space-y-3" role="img" aria-label="Bar chart of mean reciprocal rank for each index configuration">
+          {experiments.map((row) => (
+            <div key={row.name} className="grid grid-cols-[7.5rem_1fr_3.25rem] items-center gap-3 sm:grid-cols-[9rem_1fr_3.25rem]">
+              <span className="text-sm">{experimentLabel(row.name)}</span>
+              <div className="h-2.5 rounded-full bg-mist">
+                <div className="h-2.5 rounded-full bg-pine" style={{ width: `${(row.mrr / maxMrr) * 100}%` }} />
+              </div>
+              <span className="text-right text-sm tabular-nums">{row.mrr.toFixed(3)}</span>
+            </div>
+          ))}
+        </div>
       </section>
-      <section className="space-y-2 text-sm leading-6">
-        <h2 className="font-semibold">On this corpus</h2>
-        <p>BM25 did not change Recall@5 (0.833). It raised MRR from 0.629 to 0.779 and nDCG from 0.670 to 0.784, so relevant pages moved higher in the list.</p>
-        <p>HNSW matched Flat. IVF, still using the original 100 lists, scored Recall@5 of 0.796. FAISS warned that 1,177 vectors are few for that setting. That is a result for this corpus, not a general ranking of index types.</p>
-        <p>Citation precision is the share of distinct cited pages that were labeled relevant. Here it is about 0.229 with reranking. It is not answer accuracy. Precision@5 divides by 5, so it is lower when fewer than five distinct pages are returned.</p>
+
+      <section className="max-w-3xl space-y-3 text-sm leading-6">
+        <h2 className="text-2xl">On this corpus</h2>
+        {flat && plain ? (
+          <p>
+            BM25 left Recall@{flat.k} at {flat.recall_at_k.toFixed(3)}. It raised MRR from {plain.mrr.toFixed(3)} to {flat.mrr.toFixed(3)} and nDCG from{" "}
+            {plain.ndcg.toFixed(3)} to {flat.ndcg.toFixed(3)}, so relevant pages moved higher in the list.
+          </p>
+        ) : null}
+        {hnsw && ivf && flat ? (
+          <p>
+            {experimentLabel(hnsw.name)} matched Flat on the reported metrics. {experimentLabel(ivf.name)} scored Recall@{ivf.k} of {ivf.recall_at_k.toFixed(3)}.
+            FAISS warned that 1,177 vectors are few for 100 lists. That is a result for this corpus.
+          </p>
+        ) : null}
+        <p>
+          Citation precision is the share of distinct cited pages that were labeled relevant. With reranking it is about{" "}
+          {flat ? flat.citation_precision.toFixed(3) : "0.229"}. Precision@{sample.k} divides by {sample.k}, so the two numbers differ when fewer than {sample.k} distinct pages come back.
+        </p>
       </section>
     </div>
   );
