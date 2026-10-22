@@ -33,7 +33,7 @@ export default function AboutPage() {
       <section className="max-w-3xl space-y-3">
         <h2 className="text-2xl">Public demo boundary</h2>
         <p className="leading-7 text-muted">
-          The demo is a prepared demonstration. The page calls POST /api/query inside this app. That route searches six lab-note passages with hashed token vectors, or text you paste for a single request. It does not call the FastAPI service, Qdrant, or the benchmark index. Calling it a live API would misstate that. The PDF section on the same page is different: it calls OpenAI from server routes under /api/pdf, with a limit of 15 tests per browser per day and a hard cap on tokens per request.
+          The demo runs live. Its primary section answers questions about an uploaded PDF through server routes under /api/pdf; the lab-note section calls POST /api/query. Both use OpenAI embeddings and gpt-4o-mini, share a limit of 15 tests per browser per day, and cap tokens per request. They do not call the FastAPI service, Qdrant, or the benchmark index.
         </p>
       </section>
 

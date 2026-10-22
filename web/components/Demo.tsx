@@ -5,6 +5,7 @@ import type { FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 
 import type { PublicIndex, QueryResponse, RetrievedChunk } from "@/lib/rag/types";
+import { ms, updateQuota, usd, useQuota } from "@/lib/useQuota";
 
 type Status = "idle" | "loading" | "ready" | "error";
 
@@ -28,6 +29,7 @@ function formatScore(reranking: boolean, chunk: RetrievedChunk): string {
 
 export function Demo({ questions }: { questions: string[] }) {
   const params = useSearchParams();
+  const quota = useQuota();
   const sharedQuestion = params.get("q");
   const parsedK = Number(params.get("k"));
   const sharedIndex = params.get("index");
@@ -93,8 +95,9 @@ export function Demo({ questions }: { questions: string[] }) {
           ...(passages.length > 0 ? { passages } : {}),
         }),
       });
-      const payload = (await response.json()) as QueryResponse & { error?: string };
+      const payload = (await response.json().catch(() => ({ error: `Request failed with status ${response.status}.` }))) as QueryResponse & { error?: string };
       if (id !== requestId.current) return;
+      updateQuota(response.status === 429 ? { remaining: 0 } : payload);
       if (!response.ok) {
         setResult(null);
         setStatus("error");
@@ -140,12 +143,11 @@ export function Demo({ questions }: { questions: string[] }) {
   const maxK = pastedCount > 0 ? pastedCount : 6;
 
   return (
-    <div className="shell space-y-8 py-10 sm:py-14">
-      <header className="max-w-2xl space-y-3">
-        <p className="text-sm font-semibold text-muted">Prepared demonstration</p>
-        <h1 className="text-4xl text-balance sm:text-5xl">Question, passages, ranking, citations</h1>
-        <p className="text-base leading-7 text-muted">
-          Public mode runs a small in-process approximation in this Next.js app. It is not the local FastAPI and Qdrant stack. Prepared questions have a labeled page, so the response can show Recall@k and reciprocal rank.
+    <div className="space-y-6">
+      <header className="max-w-3xl space-y-2">
+        <h2 id="lab-heading" className="text-3xl">Built-in lab notes</h2>
+        <p className="text-sm leading-6 text-muted">
+          A live run over six short lab notes, or over passages you paste. Each question is embedded with text-embedding-3-small, searched with the selected index, optionally reordered by BM25, and answered by gpt-4o-mini. The listed questions have a labeled page, so the result also shows Recall@k and reciprocal rank. Each question uses one test.
         </p>
       </header>
 
@@ -263,8 +265,8 @@ export function Demo({ questions }: { questions: string[] }) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? "Retrieving…" : "Run retrieval"}
+            <button type="submit" className="btn-primary" disabled={loading || quota.remaining === 0 || quota.configured === false}>
+              {loading ? "Answering…" : "Ask"}
             </button>
             <button type="button" className="btn-ghost" onClick={() => void copyLink()}>
               Copy query link
@@ -337,6 +339,27 @@ function Result({ result }: { result: QueryResponse }) {
           <div>
             <dt className="text-muted">Rerank</dt>
             <dd className="mt-1 font-semibold tabular-nums">{result.latency_ms.rerank.toFixed(1)} ms</dd>
+          </div>
+          <div>
+            <dt className="text-muted">Generate</dt>
+            <dd className="mt-1 font-semibold tabular-nums">{ms(result.latency_ms.generate)}</dd>
+          </div>
+          <div>
+            <dt className="text-muted">Embedding tokens</dt>
+            <dd className="mt-1 font-semibold tabular-nums">
+              {result.usage.embedding_tokens}
+              {result.embedding_cached ? " (notes cached)" : ""}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-muted">Chat tokens in / out</dt>
+            <dd className="mt-1 font-semibold tabular-nums">
+              {result.usage.input_tokens} / {result.usage.output_tokens}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-muted">Cost of this answer</dt>
+            <dd className="mt-1 font-semibold tabular-nums">{usd(result.usage.estimated_cost_usd)}</dd>
           </div>
         </dl>
         <div className="panel p-4 text-sm">

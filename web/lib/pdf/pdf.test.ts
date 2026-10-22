@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { chunkPages } from "./chunk";
 import { MAX_PDF_BYTES, validatePdfFile } from "./limits";
 import { checkQuota } from "./quota";
+import { tokenize } from "./rank";
 import { bm25Scores, cosine, decodeVector, encodeVector, rankOrder, reciprocalRankFusion } from "./rank";
 
 const long = Array.from({ length: 400 }, (_, index) => `word${index}`).join(" ");
@@ -41,5 +42,9 @@ const fresh = checkQuota(new Request("https://example.test/", { headers: { "x-fo
 assert.equal(fresh.allowed, false, "ip fallback blocks a cleared cookie");
 const forged = checkQuota(new Request("https://example.test/", { headers: { "x-forwarded-for": "198.51.100.1", cookie: "pdfqa_quota=e30.bad" } }), 3);
 assert.equal(forged.used, 0);
+
+assert.deepEqual(tokenize("Diabète sucré à Paris"), ["diabète", "sucré", "à", "paris"]);
+assert.deepEqual(tokenize("糖尿病"), ["糖尿", "尿病"]);
+assert.equal(rankOrder(bm25Scores("Gesundheit Österreich", ["Bericht über Österreich und Gesundheit", "Wetter heute"]))[0], 0);
 
 console.log("pdf tests passed");
