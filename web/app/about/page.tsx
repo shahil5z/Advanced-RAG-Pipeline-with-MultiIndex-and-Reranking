@@ -13,9 +13,9 @@ export default function AboutPage() {
       <header className="space-y-4">
         <h1 className="text-4xl">About</h1>
         <div className="flex items-center gap-4">
-          <img src="/logo.png" alt="Project mark reading AI RAGCHECK" width={96} height={96} className="h-24 w-24 rounded-md" />
+          <img src="/logo.png" alt="RAGCHECK logo" width={96} height={96} className="h-24 w-24 rounded-md" />
           <p className="text-base leading-7 text-muted">
-            Shahil built this as a portfolio of retrieval work: a reproducible Python pipeline, a scored benchmark, and a public demo that a reviewer can run.
+            Shahil Haque built this as a portfolio of retrieval work: a reproducible Python pipeline, a scored benchmark, and a public demo that a reviewer can run.
           </p>
         </div>
       </header>
@@ -24,10 +24,10 @@ export default function AboutPage() {
         <h2 className="text-2xl">Local research stack</h2>
         <p>
           PDFs are split into pages, chunked, and embedded with all-MiniLM-L6-v2. Those vectors are not normalized. Flat, HNSW, and IVF indexes are built with FAISS and searched by L2 distance.
-          BM25 reranks the retrieved chunks by their row in the full corpus. OpenAI is the local generator, and the prompt includes the retrieved text. The key is <code className="rounded bg-mist px-1.5 py-0.5">OPENAI_API_KEY</code> from the process environment.
+          BM25 reranks the retrieved chunks by their row in the full corpus. OpenAI is the local generator, and the prompt includes the retrieved text. The key is <code className="rounded bg-wash px-1.5 py-0.5">OPENAI_API_KEY</code> from the process environment.
         </p>
         <p>
-          Retrieval metrics are page-level Recall, Precision, MRR, nDCG, and citation precision. A drop larger than 0.05 against the stored flat baseline fails <code className="rounded bg-mist px-1.5 py-0.5">ragcheck ci</code>.
+          Retrieval metrics are page-level Recall, Precision, MRR, nDCG, and citation precision. A drop larger than 0.05 against the stored flat baseline fails <code className="rounded bg-wash px-1.5 py-0.5">ragcheck ci</code>.
           Optional judge scores are cached and are separate from the stored table.
         </p>
       </section>
@@ -35,7 +35,7 @@ export default function AboutPage() {
       <section className="space-y-3 text-sm leading-6">
         <h2 className="text-2xl">Public demo</h2>
         <p>
-          The site is a Next.js app deployed from the <code className="rounded bg-mist px-1.5 py-0.5">web</code> directory. <code className="rounded bg-mist px-1.5 py-0.5">POST /api/query</code> ingests the six lab-note passages, embeds them, runs exact search, and reranks with BM25.
+          The site is a Next.js app deployed from the <code className="rounded bg-wash px-1.5 py-0.5">web</code> directory. <code className="rounded bg-wash px-1.5 py-0.5">POST /api/query</code> ingests the six lab-note passages, embeds them, runs exact search, and reranks with BM25.
           Hashed token vectors keep the function small. With an API key, the same route calls OpenAI for embeddings and the answer. The key stays on the server.
         </p>
         <p>
@@ -55,7 +55,7 @@ export default function AboutPage() {
       </section>
 
       <p>
-        <a className="font-semibold text-pine underline decoration-pine/40 underline-offset-4" href={GITHUB_URL}>
+        <a className="font-semibold text-navy underline decoration-navy/30 underline-offset-4" href={GITHUB_URL}>
           View source on GitHub
         </a>
       </p>

@@ -41,7 +41,7 @@ Browser -> pages
 
 PyTorch, sentence-transformers, and FAISS stay in the local package. A default serverless function would have to download `all-MiniLM-L6-v2` and ship those wheels. The public flat index uses hashed token vectors instead, so the demo retrieves and reranks with no key. `OPENAI_API_KEY` is optional and is read only on the server. The browser never receives it, and the caller cannot choose a filesystem path or a model name.
 
-The content security policy allows Next.js inline bootstrap scripts. `script-src 'self'` on its own blocks hydration, and the demo controls then do nothing.
+The content security policy allows inline scripts, which Next.js uses to hydrate the demo.
 
 Page numbers in the demo are zero-based, matching the evaluation labels. The benchmark PDFs are not required to open the site.
 

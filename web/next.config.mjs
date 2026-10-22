@@ -9,8 +9,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    // Next.js hydrates with inline bootstrap scripts. script-src 'self' alone
-    // blocks them, so the demo button never runs in production.
+    // Next.js hydration uses inline scripts, so script-src must allow them.
     value: [
       "default-src 'self'",
       "img-src 'self' data: blob:",
