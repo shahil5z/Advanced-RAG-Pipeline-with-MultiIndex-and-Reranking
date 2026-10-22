@@ -27,7 +27,7 @@ const serif = localFont({
   adjustFontFallback: "Times New Roman",
 });
 
-const description = "A multi-index RAG pipeline with BM25 reranking and a measured retrieval benchmark.";
+const description = "An advanced RAG pipeline that compares FAISS Flat, HNSW, and IVF, reranks with BM25, and scores Recall@k, MRR, and nDCG.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

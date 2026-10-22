@@ -7,6 +7,7 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/demo", label: "Demo" },
   { href: "/evaluation", label: "Evaluation" },
+  { href: "/reference", label: "API" },
   { href: "/about", label: "About" },
 ];
 
@@ -15,13 +16,9 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-line/80 bg-paper/90 backdrop-blur">
-      <div className="shell flex items-center justify-between gap-3 py-2.5">
-        <Link href="/" className="flex min-w-0 items-center gap-3 rounded-lg">
-          <img src="/logo.png" alt="" width={56} height={56} className="h-12 w-12 rounded-lg shadow-card sm:h-14 sm:w-14" />
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold leading-5 text-ink">RAG Evaluation Lab</span>
-            <span className="block text-xs leading-4 text-muted">Shahil Haque</span>
-          </span>
+      <div className="shell flex items-center justify-between gap-3 py-3">
+        <Link href="/" className="rounded-md text-sm font-semibold text-ink">
+          RAG Evaluation Lab
         </Link>
         <nav aria-label="Primary" className="flex flex-wrap justify-end gap-1">
           {links.map((link) => {

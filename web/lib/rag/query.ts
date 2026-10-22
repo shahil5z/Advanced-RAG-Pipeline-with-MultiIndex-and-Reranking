@@ -1,6 +1,16 @@
-import { getChunks, search } from "./engine";
+import demo from "../../data/demo.json";
+
+import { getChunks, searchDetailed } from "./engine";
+import type { Hit } from "./engine";
 import { cachedDocumentVectors, embedTexts, generateAnswer, OPENAI_EMBEDDING_MODEL, OPENAI_GENERATION_MODEL } from "./openai";
-import type { QueryResponse } from "./types";
+import type { QueryMetrics, QueryResponse, RetrievedChunk } from "./types";
+
+const labels = new Map<string, number[]>(
+  demo.examples.map((example) => {
+    const page = example.chunks.find((chunk) => chunk.rank === 1)?.page;
+    return [example.question, typeof page === "number" ? [page] : []];
+  }),
+);
 
 function promptFor(question: string, contexts: Array<{ chunk_id: string; document_id: string; page: number; text: string }>): string {
   const context = contexts.length
@@ -27,19 +37,53 @@ function quote(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
-export async function runQuery(input: { question: string; reranking: boolean; topK: number }): Promise<QueryResponse> {
-  const chunks = getChunks();
-  const apiKey = process.env.OPENAI_API_KEY?.trim() ?? "";
+function toChunk(hit: Hit, reranking: boolean): RetrievedChunk {
+  return {
+    rank: hit.rank,
+    vector_rank: hit.vectorRank,
+    chunk_id: hit.chunk.chunk_id,
+    document: hit.chunk.document_id,
+    page: hit.chunk.page,
+    score: reranking ? hit.bm25 : hit.distance,
+    score_type: reranking ? "bm25" : "l2_distance",
+    distance: hit.distance,
+    text: hit.chunk.text,
+  };
+}
+
+export function scoreAgainstLabels(pages: number[], relevant: number[]): Pick<QueryMetrics, "recall_at_k" | "reciprocal_rank"> {
+  if (relevant.length === 0) return { recall_at_k: null, reciprocal_rank: null };
+  const found = relevant.filter((page) => pages.includes(page));
+  let reciprocal = 0;
+  for (let index = 0; index < pages.length; index += 1) {
+    if (relevant.includes(pages[index])) {
+      reciprocal = 1 / (index + 1);
+      break;
+    }
+  }
+  return { recall_at_k: found.length / relevant.length, reciprocal_rank: reciprocal };
+}
+
+export async function runQuery(input: {
+  question: string;
+  reranking: boolean;
+  topK: number;
+  indexType?: QueryResponse["configuration"]["index_type"];
+  passages?: string[];
+}): Promise<QueryResponse> {
+  const custom = Boolean(input.passages && input.passages.length > 0);
+  const apiKey = custom ? "" : (process.env.OPENAI_API_KEY?.trim() ?? "");
   let embeddingMode: QueryResponse["embedding_mode"] = "hashing";
-  let notice: string | null = null;
+  let notice: string | null = custom ? "Pasted passages are embedded for this request only and are not stored." : null;
   let queryVector: number[] | undefined;
   let documentVectors: number[][] | undefined;
 
+  const embedStarted = performance.now();
   if (apiKey) {
     try {
       documentVectors = await cachedDocumentVectors(
         apiKey,
-        chunks.map((chunk) => chunk.text),
+        getChunks().map((chunk) => chunk.text),
       );
       const [embedded] = await embedTexts(apiKey, [input.question]);
       queryVector = embedded;
@@ -51,20 +95,21 @@ export async function runQuery(input: { question: string; reranking: boolean; to
       documentVectors = undefined;
     }
   }
+  const embedMs = performance.now() - embedStarted;
 
-  const started = performance.now();
-  const hits = search({
+  const result = searchDetailed({
     question: input.question,
     topK: input.topK,
     reranking: input.reranking,
+    indexType: input.indexType ?? "flat",
     queryVector,
-    documentVectors,
+    documentVectors: custom ? undefined : documentVectors,
+    passages: input.passages,
   });
-  const retrievalMs = performance.now() - started;
 
-  const top = hits[0];
+  const top = result.hits[0];
   const lexicalMiss = Boolean(embeddingMode === "hashing" && top && top.bm25 <= 0);
-  let answer = "I could not find an answer in the lab notes.";
+  let answer = custom ? "I could not find an answer in the pasted passages." : "I could not find an answer in the lab notes.";
   if (top && lexicalMiss) {
     answer = "I could not find a passage that shares the question's terms. The closest vector match is listed with the sources.";
   } else if (top) {
@@ -73,14 +118,14 @@ export async function runQuery(input: { question: string; reranking: boolean; to
   let answerMode: QueryResponse["answer_mode"] = "extractive";
   let generationMs = 0;
 
-  if (apiKey && embeddingMode === "openai" && hits.length > 0) {
+  if (apiKey && embeddingMode === "openai" && result.hits.length > 0) {
     const generationStarted = performance.now();
     try {
       answer = await generateAnswer(
         apiKey,
         promptFor(
           input.question,
-          hits.map((hit) => hit.chunk),
+          result.hits.map((hit) => hit.chunk),
         ),
       );
       answerMode = "openai";
@@ -92,37 +137,46 @@ export async function runQuery(input: { question: string; reranking: boolean; to
     generationMs = performance.now() - generationStarted;
   }
 
-  const distanceOrder = [...hits]
-    .sort((left, right) => left.distance - right.distance || left.chunk.corpus_index - right.chunk.corpus_index)
-    .map((hit) => hit.chunk.chunk_id)
-    .join("\n");
-  const rankedOrder = hits.map((hit) => hit.chunk.chunk_id).join("\n");
+  const relevant = custom ? [] : (labels.get(input.question) ?? []);
+  const pages = result.hits.map((hit) => hit.chunk.page);
+  const scored = scoreAgainstLabels(pages, relevant);
+  const metrics: QueryMetrics = {
+    labeled: relevant.length > 0,
+    relevant_pages: relevant,
+    recall_at_k: scored.recall_at_k,
+    reciprocal_rank: scored.reciprocal_rank,
+  };
+
   return {
     answer,
     answer_mode: answerMode,
     embedding_mode: embeddingMode,
-    retrieval_latency_ms: retrievalMs,
+    retrieval_latency_ms: embedMs + result.searchMs + result.rerankMs,
     generation_latency_ms: generationMs,
-    rerank_changed_order: Boolean(input.reranking && distanceOrder !== rankedOrder),
+    latency_ms: {
+      embed: embedMs,
+      search: result.searchMs,
+      rerank: result.rerankMs,
+      generate: generationMs,
+    },
+    rerank_changed_order: result.vectorHits.map((hit) => hit.chunk.chunk_id).join("\n") !== result.rerankedHits.map((hit) => hit.chunk.chunk_id).join("\n"),
     notice,
     configuration: {
-      index_type: "flat",
+      index_type: result.indexType,
+      index_note: result.note,
+      vectors_searched: result.visited,
+      vectors_total: result.total,
       top_k: input.topK,
       reranking: input.reranking,
       embedding: embeddingMode === "openai" ? OPENAI_EMBEDDING_MODEL : "hashed-token-l2",
       generation_model: answerMode === "openai" ? OPENAI_GENERATION_MODEL : null,
-      corpus: "lab-notes.pdf",
+      corpus: custom ? "pasted.txt" : "lab-notes.pdf",
     },
-    chunks: hits.map((hit) => ({
-      rank: hit.rank,
-      vector_rank: hit.vectorRank,
-      chunk_id: hit.chunk.chunk_id,
-      document: hit.chunk.document_id,
-      page: hit.chunk.page,
-      score: input.reranking ? hit.bm25 : hit.distance,
-      score_type: input.reranking ? "bm25" : "l2_distance",
-      distance: hit.distance,
-      text: hit.chunk.text,
-    })),
+    metrics,
+    comparison: {
+      vector: result.vectorHits.map((hit) => toChunk(hit, false)),
+      reranked: result.rerankedHits.map((hit) => toChunk(hit, true)),
+    },
+    chunks: result.hits.map((hit) => toChunk(hit, input.reranking)),
   };
 }

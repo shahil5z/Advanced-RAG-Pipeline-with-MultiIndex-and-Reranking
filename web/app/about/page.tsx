@@ -10,15 +10,12 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 sm:py-14">
-      <header className="panel flex flex-col gap-5 p-6 sm:flex-row sm:items-center">
-        <img src="/logo.png" alt="RAGCHECK logo" width={128} height={128} className="h-28 w-28 rounded-2xl shadow-card" />
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-accent">Portfolio</p>
-          <h1 className="mt-2 text-4xl">About</h1>
-          <p className="mt-3 text-base leading-7 text-muted">
-            Shahil Haque built this as a portfolio of retrieval work: a reproducible Python pipeline, a scored benchmark, and a public demo that a reviewer can run.
-          </p>
-        </div>
+      <header className="space-y-3">
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-accent">Portfolio</p>
+        <h1 className="text-4xl">About</h1>
+        <p className="text-base leading-7 text-muted">
+          A reproducible Python pipeline, a scored benchmark, and a public demo that a reviewer can run.
+        </p>
       </header>
 
       <section className="space-y-3 text-sm leading-6">
