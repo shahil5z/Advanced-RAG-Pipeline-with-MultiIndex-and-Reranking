@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "advanced-rag"
+version = "0.1.0"
+description = "Local multi-index RAG pipeline extracted from the original notebook."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "faiss-cpu>=1.8",
+    "langchain-text-splitters>=0.3",
+    "numpy>=1.26",
+    "pymupdf>=1.24,<2",
+    "pyyaml>=6",
+    "rank-bm25>=0.2.2",
+    "sentence-transformers>=3.0",
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.60"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+ragcheck = "ragcheck.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

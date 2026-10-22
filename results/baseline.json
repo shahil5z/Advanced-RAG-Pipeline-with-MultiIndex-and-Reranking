@@ -1,0 +1,408 @@
+{
+  "package_version": "0.1.0",
+  "dataset_id": "7b5bd75dd2e4",
+  "questions": 40,
+  "evaluated": 40,
+  "k": 5,
+  "metrics": {
+    "recall_at_k": 0.8333333333333334,
+    "precision_at_k": 0.185,
+    "mrr": 0.7791666666666667,
+    "ndcg": 0.7842876392515666,
+    "citation_precision": 0.22875
+  },
+  "latency_ms": {
+    "mean": 37.281977500083485,
+    "p50": 5.698850000044331,
+    "p95": 7.284490000347431
+  },
+  "errors": [],
+  "per_question": [
+    {
+      "id": "q01",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 1266.0498000004736
+    },
+    {
+      "id": "q02",
+      "recall_at_k": 0.5,
+      "precision_at_k": 0.2,
+      "mrr": 0.5,
+      "ndcg": 0.38685280723454163,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.747899999732908
+    },
+    {
+      "id": "q03",
+      "recall_at_k": 0.0,
+      "precision_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "citation_precision": 0.0,
+      "retrieval_latency_ms": 6.144400000266614
+    },
+    {
+      "id": "q04",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.4,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.5,
+      "retrieval_latency_ms": 6.073399999877438
+    },
+    {
+      "id": "q05",
+      "recall_at_k": 0.5,
+      "precision_at_k": 0.2,
+      "mrr": 0.3333333333333333,
+      "ndcg": 0.3065735963827292,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.499200000485871
+    },
+    {
+      "id": "q06",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.2612999998018495
+    },
+    {
+      "id": "q07",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.4,
+      "mrr": 1.0,
+      "ndcg": 0.9197207891481876,
+      "citation_precision": 0.5,
+      "retrieval_latency_ms": 5.444299999908253
+    },
+    {
+      "id": "q08",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.529499999283871
+    },
+    {
+      "id": "q09",
+      "recall_at_k": 0.3333333333333333,
+      "precision_at_k": 0.2,
+      "mrr": 0.3333333333333333,
+      "ndcg": 0.23463936301137822,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.866200000127719
+    },
+    {
+      "id": "q10",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.184200000257988
+    },
+    {
+      "id": "q11",
+      "recall_at_k": 0.0,
+      "precision_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "citation_precision": 0.0,
+      "retrieval_latency_ms": 5.308900000272843
+    },
+    {
+      "id": "q12",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.618600000161678
+    },
+    {
+      "id": "q13",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.703499999981432
+    },
+    {
+      "id": "q14",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.119700000250305
+    },
+    {
+      "id": "q15",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.914800000027753
+    },
+    {
+      "id": "q16",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.8988000000681495
+    },
+    {
+      "id": "q17",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.172299999685492
+    },
+    {
+      "id": "q18",
+      "recall_at_k": 0.0,
+      "precision_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "citation_precision": 0.0,
+      "retrieval_latency_ms": 5.475500000102329
+    },
+    {
+      "id": "q19",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.3333333333333333,
+      "retrieval_latency_ms": 5.71239999953832
+    },
+    {
+      "id": "q20",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.381500000112283
+    },
+    {
+      "id": "q21",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.486600000040198
+    },
+    {
+      "id": "q22",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.358200000046054
+    },
+    {
+      "id": "q23",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.5,
+      "retrieval_latency_ms": 6.487599999672966
+    },
+    {
+      "id": "q24",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.513900000551075
+    },
+    {
+      "id": "q25",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.340200000318873
+    },
+    {
+      "id": "q26",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.8260000005248
+    },
+    {
+      "id": "q27",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 0.5,
+      "ndcg": 0.6309297535714575,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.69420000010723
+    },
+    {
+      "id": "q28",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 0.5,
+      "ndcg": 0.6309297535714575,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 7.470499999726599
+    },
+    {
+      "id": "q29",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 5.6721000000834465
+    },
+    {
+      "id": "q30",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 0.5,
+      "ndcg": 0.6309297535714575,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 6.313300000329036
+    },
+    {
+      "id": "q31",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 4.983699999684177
+    },
+    {
+      "id": "q32",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 6.303499999376072
+    },
+    {
+      "id": "q33",
+      "recall_at_k": 0.0,
+      "precision_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "citation_precision": 0.0,
+      "retrieval_latency_ms": 7.274700000380108
+    },
+    {
+      "id": "q34",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 0.5,
+      "ndcg": 0.6309297535714575,
+      "citation_precision": 0.2,
+      "retrieval_latency_ms": 6.06190000053175
+    },
+    {
+      "id": "q35",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 6.69460000062827
+    },
+    {
+      "id": "q36",
+      "recall_at_k": 0.0,
+      "precision_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "citation_precision": 0.0,
+      "retrieval_latency_ms": 5.88540000080684
+    },
+    {
+      "id": "q37",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.041299999902549
+    },
+    {
+      "id": "q38",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.3333333333333333,
+      "retrieval_latency_ms": 6.372599999849626
+    },
+    {
+      "id": "q39",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.3333333333333333,
+      "retrieval_latency_ms": 6.094400000620226
+    },
+    {
+      "id": "q40",
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "mrr": 1.0,
+      "ndcg": 1.0,
+      "citation_precision": 0.25,
+      "retrieval_latency_ms": 5.298199999742792
+    }
+  ],
+  "judge": null,
+  "name": "flat_baseline",
+  "timestamp": "2026-10-22T11:27:16.716128+00:00",
+  "seed": 42,
+  "python": "3.13.15",
+  "git_commit": "29d662c",
+  "configuration": {
+    "embedding_model": "all-MiniLM-L6-v2",
+    "chunk_size": 1000,
+    "chunk_overlap": 200,
+    "index_type": "flat",
+    "top_k": 5,
+    "reranking": true,
+    "generation_model": "gpt-4.1-mini",
+    "temperature": 0.5,
+    "input_paths": [
+      "Global report on diabetes.pdf",
+      "Understanding_Science.pdf"
+    ],
+    "output_path": null,
+    "seed": 42,
+    "hnsw_m": 32,
+    "hnsw_ef_construction": 40,
+    "ivf_nlist": 100,
+    "ivf_nprobe": 10
+  }
+}

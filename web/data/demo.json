@@ -1,0 +1,190 @@
+{
+  "examples": [
+    {
+      "id": "d1",
+      "question": "What does the Flat index compare a query vector with?",
+      "answer": "The lab Flat index compares a query vector with every stored vector and returns the\nsmallest L2 distances.",
+      "retrieval_latency_ms": 11.782000000494008,
+      "configuration": {
+        "index_type": "flat",
+        "top_k": 2,
+        "reranking": true
+      },
+      "chunks": [
+        {
+          "rank": 1,
+          "document": "lab-notes.pdf",
+          "page": 0,
+          "score": 3.7229381434019357,
+          "score_type": "bm25",
+          "distance": 0.7869296073913574,
+          "text": "The lab Flat index compares a query vector with every stored vector and returns the\nsmallest L2 distances."
+        },
+        {
+          "rank": 2,
+          "document": "lab-notes.pdf",
+          "page": 2,
+          "score": 0.6070233193898248,
+          "score_type": "bm25",
+          "distance": 1.2479465007781982,
+          "text": "The lab IVF index splits vectors into 100 lists. A query searches 10 of those lists."
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "question": "How many neighbors does each HNSW node keep in this lab?",
+      "answer": "The lab HNSW index uses a graph. Each node keeps 32 neighbors. Construction uses\nefConstruction 40.",
+      "retrieval_latency_ms": 4.983499999980268,
+      "configuration": {
+        "index_type": "flat",
+        "top_k": 2,
+        "reranking": true
+      },
+      "chunks": [
+        {
+          "rank": 1,
+          "document": "lab-notes.pdf",
+          "page": 1,
+          "score": 2.4881751010990834,
+          "score_type": "bm25",
+          "distance": 0.43255048990249634,
+          "text": "The lab HNSW index uses a graph. Each node keeps 32 neighbors. Construction uses\nefConstruction 40."
+        },
+        {
+          "rank": 2,
+          "document": "lab-notes.pdf",
+          "page": 0,
+          "score": 0.0,
+          "score_type": "bm25",
+          "distance": 1.4263771772384644,
+          "text": "The lab Flat index compares a query vector with every stored vector and returns the\nsmallest L2 distances."
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "question": "How many IVF lists are searched for a query in this lab?",
+      "answer": "The lab IVF index splits vectors into 100 lists. A query searches 10 of those lists.",
+      "retrieval_latency_ms": 3.9175000001705484,
+      "configuration": {
+        "index_type": "flat",
+        "top_k": 2,
+        "reranking": true
+      },
+      "chunks": [
+        {
+          "rank": 1,
+          "document": "lab-notes.pdf",
+          "page": 2,
+          "score": 1.9488282920916213,
+          "score_type": "bm25",
+          "distance": 0.5062335729598999,
+          "text": "The lab IVF index splits vectors into 100 lists. A query searches 10 of those lists."
+        },
+        {
+          "rank": 2,
+          "document": "lab-notes.pdf",
+          "page": 1,
+          "score": 0.0,
+          "score_type": "bm25",
+          "distance": 1.3107705116271973,
+          "text": "The lab HNSW index uses a graph. Each node keeps 32 neighbors. Construction uses\nefConstruction 40."
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "question": "How does BM25 order the retrieved chunks?",
+      "answer": "BM25 reranking scores a retrieved chunk by its row in the full corpus. A higher BM25\nscore is ordered first.",
+      "retrieval_latency_ms": 3.887599999870872,
+      "configuration": {
+        "index_type": "flat",
+        "top_k": 2,
+        "reranking": true
+      },
+      "chunks": [
+        {
+          "rank": 1,
+          "document": "lab-notes.pdf",
+          "page": 3,
+          "score": 1.8477534676664702,
+          "score_type": "bm25",
+          "distance": 0.7454693913459778,
+          "text": "BM25 reranking scores a retrieved chunk by its row in the full corpus. A higher BM25\nscore is ordered first."
+        },
+        {
+          "rank": 2,
+          "document": "lab-notes.pdf",
+          "page": 4,
+          "score": 0.0,
+          "score_type": "bm25",
+          "distance": 1.2442106008529663,
+          "text": "Recall counts a retrieved chunk as relevant when its document and page were labeled\nin the golden file."
+        }
+      ]
+    },
+    {
+      "id": "d5",
+      "question": "When does recall count a chunk as relevant?",
+      "answer": "Recall counts a retrieved chunk as relevant when its document and page were labeled\nin the golden file.",
+      "retrieval_latency_ms": 3.800700000283541,
+      "configuration": {
+        "index_type": "flat",
+        "top_k": 2,
+        "reranking": true
+      },
+      "chunks": [
+        {
+          "rank": 1,
+          "document": "lab-notes.pdf",
+          "page": 4,
+          "score": 1.3966554409273055,
+          "score_type": "bm25",
+          "distance": 0.5248050689697266,
+          "text": "Recall counts a retrieved chunk as relevant when its document and page were labeled\nin the golden file."
+        },
+        {
+          "rank": 2,
+          "document": "lab-notes.pdf",
+          "page": 3,
+          "score": 0.0,
+          "score_type": "bm25",
+          "distance": 1.5308218002319336,
+          "text": "BM25 reranking scores a retrieved chunk by its row in the full corpus. A higher BM25\nscore is ordered first."
+        }
+      ]
+    },
+    {
+      "id": "d6",
+      "question": "Does the public demo call OpenAI?",
+      "answer": "The public demo does not call OpenAI. Local generation sends the retrieved chunk text\nto the configured OpenAI model.",
+      "retrieval_latency_ms": 3.5416999999142718,
+      "configuration": {
+        "index_type": "flat",
+        "top_k": 2,
+        "reranking": true
+      },
+      "chunks": [
+        {
+          "rank": 1,
+          "document": "lab-notes.pdf",
+          "page": 5,
+          "score": 3.7322626516486253,
+          "score_type": "bm25",
+          "distance": 0.747964084148407,
+          "text": "The public demo does not call OpenAI. Local generation sends the retrieved chunk text\nto the configured OpenAI model."
+        },
+        {
+          "rank": 2,
+          "document": "lab-notes.pdf",
+          "page": 3,
+          "score": 0.0,
+          "score_type": "bm25",
+          "distance": 1.9313241243362427,
+          "text": "BM25 reranking scores a retrieved chunk by its row in the full corpus. A higher BM25\nscore is ordered first."
+        }
+      ]
+    }
+  ]
+}

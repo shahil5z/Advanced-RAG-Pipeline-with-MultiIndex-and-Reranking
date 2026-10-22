@@ -1,0 +1,17 @@
+embedding_model: all-MiniLM-L6-v2
+chunk_size: 1000
+chunk_overlap: 200
+index_type: flat
+top_k: 5
+reranking: true
+generation_model: gpt-4.1-mini
+temperature: 0.5
+input_paths:
+  - Global report on diabetes.pdf
+  - Understanding_Science.pdf
+output_path: null
+seed: 42
+hnsw_m: 32
+hnsw_ef_construction: 40
+ivf_nlist: 100
+ivf_nprobe: 10

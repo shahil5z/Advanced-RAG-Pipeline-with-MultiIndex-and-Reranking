@@ -1,0 +1,26 @@
+dataset: data/golden/diabetes.jsonl
+experiments:
+  - name: flat_baseline
+    index_type: flat
+    chunk_size: 1000
+    chunk_overlap: 200
+    top_k: 5
+    reranking: true
+  - name: flat_no_rerank
+    index_type: flat
+    chunk_size: 1000
+    chunk_overlap: 200
+    top_k: 5
+    reranking: false
+  - name: hnsw
+    index_type: hnsw
+    chunk_size: 1000
+    chunk_overlap: 200
+    top_k: 5
+    reranking: true
+  - name: ivf
+    index_type: ivf
+    chunk_size: 1000
+    chunk_overlap: 200
+    top_k: 5
+    reranking: true
