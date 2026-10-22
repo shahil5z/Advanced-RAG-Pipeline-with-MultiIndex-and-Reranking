@@ -5,7 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "tsx lib/rag/engine.test.ts && tsx lib/pdf/pdf.test.ts"
+    "test": "tsx lib/rag/engine.test.ts && tsx lib/pdf/pdf.test.ts && tsx lib/pdf/language.test.ts"
   },
   "dependencies": {
     "next": "^15.5.4",

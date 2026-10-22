@@ -280,7 +280,7 @@ export function Demo({ questions }: { questions: string[] }) {
         <section aria-live="polite" className="min-w-0 space-y-4">
           {status === "idle" ? (
             <div className="panel border-dashed px-5 py-10">
-              <p className="font-serif text-2xl">Results appear here</p>
+              <p className="text-2xl font-semibold">Results appear here</p>
               <p className="mt-2 max-w-md text-sm leading-6 text-muted">
                 Run a question to see the answer, the latency breakdown, and the same hits with and without BM25.
               </p>

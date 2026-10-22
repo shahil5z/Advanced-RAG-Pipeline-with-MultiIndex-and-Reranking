@@ -40,6 +40,9 @@
 
 html {
   scroll-padding-top: 5.5rem;
+  font-size: 106.25%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -47,6 +50,9 @@ body {
   background-image: var(--hero-glow);
   background-repeat: no-repeat;
   color: rgb(var(--c-ink));
+  line-height: 1.65;
+  font-feature-settings: "cv11", "ss01";
+  overflow-wrap: break-word;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -60,10 +66,45 @@ a:hover {
 
 h1,
 h2,
-h3 {
-  font-family: var(--font-serif), Georgia, serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+h3,
+h4 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+main p,
+main li {
+  max-width: 72ch;
+}
+
+main p {
+  text-wrap: pretty;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  font-variant-ligatures: none;
+}
+
+pre {
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+table {
+  line-height: 1.5;
 }
 
 :focus-visible {
