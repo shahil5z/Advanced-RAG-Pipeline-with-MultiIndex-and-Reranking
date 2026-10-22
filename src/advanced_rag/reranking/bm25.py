@@ -71,6 +71,11 @@ class BM25Reranker:
         self._size = len(chunks)
         self._model = BM25Okapi([tokenize(chunk.text) for chunk in chunks])
 
+    def top_ids(self, query: str, chunks: list[Chunk], top_k: int) -> list[str]:
+        scores = self._model.get_scores(tokenize(query))
+        order = sorted(range(len(chunks)), key=lambda index: (-float(scores[index]), index))
+        return [chunks[index].chunk_id for index in order[:top_k]]
+
     def rerank(
         self,
         query: str,

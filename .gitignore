@@ -1,4 +1,6 @@
 .env
+.env.*
+!.env.example
 env
 .venv/
 venv/
@@ -19,6 +21,8 @@ chroma_store/
 _page_index_*.txt
 _quotes.txt
 results/cache/
+*.sqlite
+*.sqlite3
 .cache/
 models/
 *.pt

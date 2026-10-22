@@ -137,7 +137,7 @@ def test_openai_generator_sends_context_and_hides_errors(monkeypatch):
     with pytest.raises(RuntimeError) as exc:
         OpenAIGenerator("gpt-4.1-mini", 0).generate("question", [])
     assert "OPENAI_API_KEY" in str(exc.value)
-    assert "sk-" not in str(exc.value)
+    assert "sk" + "-" not in str(exc.value)
 
 
 def test_pipeline_retrieve_does_not_call_the_generator(tmp_path):

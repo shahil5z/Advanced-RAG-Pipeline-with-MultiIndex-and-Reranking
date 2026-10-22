@@ -22,10 +22,47 @@ dependencies = [
 
 [project.optional-dependencies]
 openai = ["openai>=1.60"]
-dev = ["pytest>=8.0"]
+api = [
+    "fastapi>=0.115",
+    "httpx>=0.27",
+    "opentelemetry-api>=1.27",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.27",
+    "opentelemetry-sdk>=1.27",
+    "qdrant-client>=1.12",
+    "uvicorn>=0.32",
+]
+dev = [
+    "bandit>=1.8",
+    "mypy>=1.13",
+    "pip-audit>=2.7",
+    "pytest>=8.0",
+    "ruff>=0.8",
+]
+load = ["locust>=2.32"]
 
 [project.scripts]
 ragcheck = "ragcheck.cli:main"
+rag-api = "advanced_rag.api.app:main"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+packages = ["advanced_rag", "ragcheck"]
+ignore_missing_imports = true
+check_untyped_defs = false
+warn_unused_ignores = false
+
+[tool.bandit]
+exclude_dirs = ["tests", "scripts"]
+skips = ["B101"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -6,14 +6,14 @@ time is not included in retrieval latency.
 
 from __future__ import annotations
 
-import subprocess
+import subprocess  # nosec B404
 from pathlib import Path
 
 import numpy as np
 import yaml
 
-from advanced_rag.config import RAGConfig
 from advanced_rag.chunking import chunk_pages
+from advanced_rag.config import RAGConfig
 from advanced_rag.embeddings import SentenceTransformerEmbedder
 from advanced_rag.indexes import build_faiss_index
 from advanced_rag.ingestion import load_pdfs
@@ -32,7 +32,8 @@ def load_matrix(path: str | Path) -> dict:
 
 def run_matrix(path: str | Path, base_config: RAGConfig) -> list[dict]:
     spec = load_matrix(path)
-    rows, dataset_id = load_dataset(spec["dataset"])
+    # Local JSONL loader, not a model download.
+    rows, dataset_id = load_dataset(spec["dataset"])  # nosec B615
     pages = load_pdfs(base_config.input_paths)
     commit = _commit()
     embedders: dict[str, SentenceTransformerEmbedder] = {}
@@ -113,7 +114,7 @@ def _overrides(experiment: dict) -> dict:
 
 def _commit() -> str | None:
     try:
-        completed = subprocess.run(
+        completed = subprocess.run(  # nosec B603 B607
             ["git", "rev-parse", "--short", "HEAD"],
             check=False,
             capture_output=True,
