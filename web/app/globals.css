@@ -11,8 +11,8 @@ html {
 }
 
 body {
-  background: #f3f0e8;
-  color: #1c1915;
+  background: #f4f6f9;
+  color: #101828;
 }
 
 h1,
@@ -24,12 +24,16 @@ h3 {
 }
 
 :focus-visible {
-  outline: 2px solid #1c1915;
+  outline: 2px solid #101828;
   outline-offset: 3px;
 }
 
+header :focus-visible {
+  outline-color: #ffffff;
+}
+
 ::selection {
-  background: #d5e4da;
+  background: #e4ebf3;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,10 +53,14 @@ h3 {
   }
 
   .btn-primary {
-    @apply btn bg-pine text-cream hover:bg-pine-dark disabled:opacity-60;
+    @apply btn bg-navy text-white hover:bg-navy-dark disabled:opacity-60;
   }
 
   .btn-ghost {
-    @apply btn border border-line bg-card text-ink hover:bg-paper;
+    @apply btn border border-line bg-card text-ink shadow-card hover:bg-wash;
+  }
+
+  .panel {
+    @apply rounded-lg border border-line bg-card shadow-card;
   }
 }

@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: "RAG Evaluation Lab",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "RAG Evaluation Lab: multi-index retrieval, measured." }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "RAG Evaluation Lab logo with the title Multi-index retrieval and reranking." }],
   },
   twitter: {
     card: "summary_large_image",
@@ -45,16 +45,13 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "48x48" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/favicon.ico", sizes: "48x48" }, { url: "/logo.png", type: "image/png" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f3f0e8",
+  themeColor: "#13293d",
   width: "device-width",
   initialScale: 1,
 };
@@ -63,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable}`}>
       <body className="min-h-screen bg-paper font-sans text-ink antialiased">
-        <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-20 focus:rounded-md focus:bg-card focus:px-3 focus:py-2">
+        <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-20 focus:rounded-md focus:bg-card focus:px-3 focus:py-2 focus:text-ink">
           Skip to content
         </a>
         <Nav />

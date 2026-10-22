@@ -4,19 +4,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        paper: "#f3f0e8",
-        ink: "#1c1915",
-        muted: "#4a453c",
-        line: "#ddd6c8",
-        card: "#fbfaf6",
-        pine: "#1e4d3a",
-        "pine-dark": "#16382b",
-        mist: "#e5efe8",
-        cream: "#f7f4ee",
+        paper: "#f4f6f9",
+        ink: "#101828",
+        muted: "#3e4c5f",
+        line: "#d5dee8",
+        card: "#ffffff",
+        navy: "#13293d",
+        "navy-dark": "#0c1e2e",
+        wash: "#e8eef5",
+        accent: "#9a541f",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Source Sans 3", "sans-serif"],
         serif: ["var(--font-serif)", "Source Serif 4", "Georgia", "serif"],
+      },
+      boxShadow: {
+        card: "0 1px 2px rgba(16, 24, 40, 0.06)",
       },
     },
   },

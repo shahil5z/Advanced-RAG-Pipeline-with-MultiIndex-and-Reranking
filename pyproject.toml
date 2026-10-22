@@ -7,7 +7,9 @@ name = "advanced-rag"
 version = "0.1.0"
 description = "Local multi-index RAG pipeline extracted from the original notebook."
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.11"
+authors = [{ name = "Shahil Haque" }]
 dependencies = [
     "faiss-cpu>=1.8",
     "langchain-text-splitters>=0.3",

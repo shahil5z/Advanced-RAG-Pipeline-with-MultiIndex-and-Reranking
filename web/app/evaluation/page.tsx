@@ -12,7 +12,7 @@ export default function EvaluationPage() {
     return (
       <div className="space-y-3">
         <h1 className="text-4xl">Evaluation</h1>
-        <p className="rounded-lg border border-dashed border-line bg-card px-4 py-6 text-sm leading-6 text-muted">
+        <p className="panel border-dashed px-4 py-6 text-sm leading-6 text-muted">
           No evaluation results are available. Run a local evaluation to populate this view.
         </p>
       </div>
@@ -36,13 +36,13 @@ export default function EvaluationPage() {
         </p>
       </header>
 
-      <div className="overflow-x-auto rounded-lg border border-line bg-card">
+      <div className="panel overflow-x-auto">
         <table className="w-full min-w-[44rem] border-collapse text-sm">
           <caption className="px-4 py-3 text-left text-sm text-muted">
             Retrieval metrics. Citation precision uses the number of distinct cited pages as the denominator.
           </caption>
           <thead>
-            <tr className="border-b border-line text-left">
+            <tr className="border-b border-line bg-wash text-left">
               <th scope="col" className="px-4 py-2 font-semibold">
                 Configuration
               </th>
@@ -93,8 +93,8 @@ export default function EvaluationPage() {
           {experiments.map((row) => (
             <div key={row.name} className="grid grid-cols-[7.5rem_1fr_3.25rem] items-center gap-3 sm:grid-cols-[9rem_1fr_3.25rem]">
               <span className="text-sm">{experimentLabel(row.name)}</span>
-              <div className="h-2.5 rounded-full bg-mist">
-                <div className="h-2.5 rounded-full bg-pine" style={{ width: `${(row.mrr / maxMrr) * 100}%` }} />
+              <div className="h-2.5 rounded-full bg-wash">
+                <div className="h-2.5 rounded-full bg-accent" style={{ width: `${(row.mrr / maxMrr) * 100}%` }} />
               </div>
               <span className="text-right text-sm tabular-nums">{row.mrr.toFixed(3)}</span>
             </div>

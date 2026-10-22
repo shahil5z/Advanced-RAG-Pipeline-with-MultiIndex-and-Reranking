@@ -74,12 +74,12 @@ export function Demo({ questions }: { questions: string[] }) {
         <h1 className="text-4xl text-balance">Ask the lab notes</h1>
         <p className="text-base leading-7 text-muted">
           Retrieval runs on the server over six short passages. The flat index compares a hashed query vector with every
-          passage, then BM25 can reorder those hits. When <code className="rounded bg-mist px-1.5 py-0.5 text-sm">OPENAI_API_KEY</code> is
+          passage, then BM25 can reorder those hits. When <code className="rounded bg-wash px-1.5 py-0.5 text-sm">OPENAI_API_KEY</code> is
           set, embeddings and the written answer use OpenAI. Otherwise the answer is the top passage.
         </p>
       </header>
 
-      <form onSubmit={onSubmit} className="space-y-4 rounded-lg border border-line bg-card p-4 sm:p-5" aria-busy={loading}>
+      <form onSubmit={onSubmit} className="panel space-y-4 p-4 sm:p-5" aria-busy={loading}>
         <div>
           <label htmlFor="question" className="text-sm font-semibold">
             Question
@@ -112,7 +112,7 @@ export function Demo({ questions }: { questions: string[] }) {
                     setQuestion(item);
                     void execute(item);
                   }}
-                  className="max-w-full rounded-full border border-line bg-paper px-3 py-2 text-left text-sm leading-5 hover:border-pine hover:bg-mist disabled:opacity-60"
+                  className="max-w-full rounded-full border border-line bg-paper px-3 py-2 text-left text-sm leading-5 hover:border-accent hover:bg-wash disabled:opacity-60"
                 >
                   {item}
                 </button>
@@ -126,7 +126,7 @@ export function Demo({ questions }: { questions: string[] }) {
           <label className="flex min-h-11 items-center gap-3 text-sm font-semibold">
             <input
               type="checkbox"
-              className="h-4 w-4 accent-pine"
+              className="h-4 w-4 accent-navy"
               checked={reranking}
               disabled={loading}
               onChange={(event) => setReranking(event.target.checked)}
@@ -158,22 +158,22 @@ export function Demo({ questions }: { questions: string[] }) {
 
       <section aria-live="polite" className="space-y-4">
         {status === "idle" ? (
-          <p className="rounded-lg border border-dashed border-line bg-card px-4 py-6 text-sm leading-6 text-muted">
+          <p className="panel border-dashed px-4 py-6 text-sm leading-6 text-muted">
             Results appear here. Ask about the lab notes, or choose a prepared question.
           </p>
         ) : null}
 
         {status === "loading" ? (
-          <div className="space-y-3 rounded-lg border border-line bg-card p-4" role="status">
+          <div className="panel space-y-3 p-4" role="status">
             <p className="text-sm font-semibold">Retrieving passages…</p>
-            <div className="h-3 w-2/3 animate-pulse rounded bg-mist" />
-            <div className="h-3 w-full animate-pulse rounded bg-mist" />
-            <div className="h-3 w-5/6 animate-pulse rounded bg-mist" />
+            <div className="h-3 w-2/3 animate-pulse rounded bg-wash" />
+            <div className="h-3 w-full animate-pulse rounded bg-wash" />
+            <div className="h-3 w-5/6 animate-pulse rounded bg-wash" />
           </div>
         ) : null}
 
         {status === "error" ? (
-          <div className="rounded-lg border border-pine/30 bg-mist px-4 py-4 text-sm leading-6" role="alert">
+          <div className="rounded-lg border border-accent/40 bg-wash px-4 py-4 text-sm leading-6" role="alert">
             <p className="font-semibold">The query did not finish</p>
             <p className="mt-1">{error}</p>
           </div>
@@ -191,8 +191,8 @@ function Result({ result }: { result: QueryResponse }) {
 
   return (
     <div className="space-y-6">
-      {result.notice ? <p className="rounded-md bg-mist px-3 py-2 text-sm leading-6">{result.notice}</p> : null}
-      <dl className="grid grid-cols-2 gap-4 rounded-lg border border-line bg-card p-4 text-sm sm:grid-cols-4">
+      {result.notice ? <p className="rounded-md bg-wash px-3 py-2 text-sm leading-6">{result.notice}</p> : null}
+      <dl className="panel grid grid-cols-2 gap-4 p-4 text-sm sm:grid-cols-4">
         <div>
           <dt className="text-muted">Index</dt>
           <dd className="mt-1 font-semibold">Flat · exact search</dd>
@@ -229,7 +229,7 @@ function Result({ result }: { result: QueryResponse }) {
         ) : (
           <ol className="mt-3 space-y-3">
             {result.chunks.map((chunk) => (
-              <li key={chunk.chunk_id} className="rounded-lg border border-line bg-card p-4">
+              <li key={chunk.chunk_id} className="panel p-4">
                 <p className="text-sm font-semibold">
                   {chunk.rank}. {chunk.document} · page {chunk.page}
                 </p>

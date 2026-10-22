@@ -1,4 +1,18 @@
-# Advanced RAG Evaluation Lab
+<div align="center">
+
+<img src="web/public/logo.png" alt="RAG Evaluation Lab" width="96" />
+
+<h1>Advanced RAG Evaluation Lab</h1>
+
+<p>
+  <a href="https://www.python.org/"><img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" /></a>
+  <a href="https://nextjs.org/"><img alt="Next.js 15" src="https://img.shields.io/badge/Next.js-15-111111?logo=nextdotjs&logoColor=white" /></a>
+  <a href="https://github.com/facebookresearch/faiss"><img alt="FAISS" src="https://img.shields.io/badge/FAISS-multi--index-13293d" /></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-9a541f" /></a>
+  <a href="https://advanced-rag-evaluation.vercel.app"><img alt="Live demo on Vercel" src="https://img.shields.io/badge/live%20demo-Vercel-13293d?logo=vercel&logoColor=white" /></a>
+</p>
+
+</div>
 
 A local multi-index RAG pipeline and a small evaluation tool, `ragcheck`, taken from an older notebook and measured on 40 reviewed questions.
 
@@ -10,29 +24,11 @@ The notebook timed one query and printed an L2 distance. This package keeps the 
 
 ## Architecture
 
-Locally, `advanced_rag` loads PDFs, chunks them, embeds them with `all-MiniLM-L6-v2`, and searches one FAISS index. BM25 can rerank those hits. OpenAI is the only generator. It receives the retrieved text and reads `OPENAI_API_KEY` from the environment. `ragcheck` can score retrieval without that key.
+Locally, `advanced_rag` loads PDFs, chunks them, embeds them with `all-MiniLM-L6-v2`, and searches one FAISS index. BM25 can rerank those hits. OpenAI is the generator. It receives the retrieved text and reads `OPENAI_API_KEY` from the environment. `ragcheck` can score retrieval without that key.
 
-The public site is a Next.js view of saved data. It shows six prepared questions from a short note written for the site, and the benchmark table. It does not embed the project PDFs, rebuild FAISS, or call OpenAI.
+The public site is the Next.js app in `web/`. `POST /api/query` searches six lab-note passages with hashed token vectors and can rerank them with BM25. When `OPENAI_API_KEY` is set on the server, that route uses OpenAI embeddings and writes the answer with the retrieved text. The evaluation page shows the stored FAISS benchmark. Flat, HNSW, and IVF stay in the Python package.
 
-Details are in `docs/ARCHITECTURE.md`.
-
-## Quick start
-
-```bash
-python -m pip install -e ".[dev,openai]"
-ragcheck build-dataset
-pytest
-```
-
-Export `OPENAI_API_KEY` in the shell before generation or the judge. The package does not load a secrets file.
-
-```bash
-ragcheck run --matrix experiments/default.yaml
-ragcheck ci --current results/experiments/latest.json --baseline results/baseline.json --name hnsw
-cd web && npm install && npm run dev
-```
-
-`ragcheck run` downloads the embedding model on first use and embeds the PDFs. The committed results already contain one local run.
+Details are in `docs/ARCHITECTURE.md`. Deployment settings are in `docs/VERCEL.md`. The live site is [advanced-rag-evaluation.vercel.app](https://advanced-rag-evaluation.vercel.app).
 
 ## Evaluation
 
@@ -71,12 +67,6 @@ IVF kept the original `nlist=100` and `nprobe=10`. FAISS warned that 1,177 vecto
 
 `results/baseline.json` is Flat with reranking. `ragcheck ci` fails a metric that drops by more than 0.05. HNSW passes. The no-rerank run fails on MRR and nDCG. IVF stays inside the gate. Latency is not gated unless `latency_ratio` is set.
 
-## Public demo
-
-`web/` serves prepared traces from `data/demo/lab-notes.pdf`. The evaluation page repeats the table above. Full retrieval and generation stay in the Python package.
-
-A Vercel project for this site should use `web` as the root directory. The site does not need `OPENAI_API_KEY`, the source PDFs, or a Python process. No production URL has been created from this repository.
-
 ## Limitations
 
 - Forty questions and one clean source report.
@@ -85,6 +75,7 @@ A Vercel project for this site should use `web` as the root directory. The site 
 - Generation was not scored. OpenAI output is not deterministic.
 - Index latency on this corpus is not a scaling result.
 - The two source PDFs are for local runs. This project does not claim they can be redistributed.
+- The public query route uses hashed token vectors unless `OPENAI_API_KEY` is set. The table above is the local FAISS run.
 
 ## Repository structure
 
@@ -94,7 +85,18 @@ src/ragcheck/         metrics, matrix, CLI
 data/golden/          40 reviewed questions
 data/demo/            short public note
 results/              stored benchmark
-web/                  Next.js demo and table
+web/                  Next.js demo and benchmark
 docs/ARCHITECTURE.md
+docs/VERCEL.md
 notebooks/            original notebooks
 ```
+
+## Author
+
+Shahil Haque
+
+GitHub: [https://github.com/shahil5z](https://github.com/shahil5z)
+
+## License
+
+MIT. See [LICENSE](LICENSE).
