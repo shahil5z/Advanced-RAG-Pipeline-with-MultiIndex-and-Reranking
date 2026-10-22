@@ -226,7 +226,7 @@ export function PdfQa() {
                 <input type="checkbox" checked={rerank} onChange={(event) => setRerank(event.target.checked)} />
                 Rerank the fused candidates with gpt-4o-mini
               </label>
-              <button type="submit" disabled={busy || exhausted} className="btn rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">
+              <button type="submit" disabled={busy || exhausted} className="btn-primary rounded-xl">
                 {stage === "asking" ? "Answering…" : "Ask"}
               </button>
             </form>

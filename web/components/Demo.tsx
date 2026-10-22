@@ -187,7 +187,7 @@ export function Demo({ questions }: { questions: string[] }) {
                         void execute(item);
                       }}
                       className={`max-w-full rounded-full border px-3 py-2 text-left text-sm leading-5 disabled:opacity-60 ${
-                        selected ? "border-navy bg-navy text-white" : "border-line bg-paper hover:border-accent hover:bg-wash"
+                        selected ? "border-navy bg-navy text-white shadow-card" : "border-line bg-paper hover:border-accent hover:bg-wash"
                       }`}
                     >
                       {item}

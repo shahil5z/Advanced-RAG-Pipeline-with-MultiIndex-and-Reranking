@@ -4,6 +4,38 @@
 
 :root {
   color-scheme: light;
+  --c-paper: 247 246 252;
+  --c-ink: 20 16 43;
+  --c-muted: 74 70 102;
+  --c-line: 220 216 238;
+  --c-card: 255 255 255;
+  --c-navy: 67 46 186;
+  --c-navy-dark: 49 31 148;
+  --c-wash: 239 236 250;
+  --c-accent: 13 116 108;
+  --c-steel: 91 88 120;
+  --c-teal: 13 148 136;
+  --c-violet: 124 58 237;
+  --c-shadow: 40 24 110;
+  --hero-glow: radial-gradient(60rem 30rem at 10% -10%, rgb(124 58 237 / 0.14), transparent 60%), radial-gradient(50rem 26rem at 95% 0%, rgb(13 148 136 / 0.12), transparent 60%);
+}
+
+.dark {
+  color-scheme: dark;
+  --c-paper: 12 10 29;
+  --c-ink: 237 234 251;
+  --c-muted: 181 176 211;
+  --c-line: 49 44 88;
+  --c-card: 22 19 46;
+  --c-navy: 99 76 230;
+  --c-navy-dark: 80 58 210;
+  --c-wash: 32 28 64;
+  --c-accent: 45 212 191;
+  --c-steel: 160 156 192;
+  --c-teal: 45 212 191;
+  --c-violet: 167 139 250;
+  --c-shadow: 0 0 0;
+  --hero-glow: radial-gradient(60rem 30rem at 10% -10%, rgb(124 58 237 / 0.28), transparent 60%), radial-gradient(50rem 26rem at 95% 0%, rgb(45 212 191 / 0.16), transparent 60%);
 }
 
 html {
@@ -11,8 +43,19 @@ html {
 }
 
 body {
-  background: #f4f6f9;
-  color: #101828;
+  background-color: rgb(var(--c-paper));
+  background-image: var(--hero-glow);
+  background-repeat: no-repeat;
+  color: rgb(var(--c-ink));
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration-color: rgb(var(--c-accent));
 }
 
 h1,
@@ -24,7 +67,7 @@ h3 {
 }
 
 :focus-visible {
-  outline: 2px solid #101828;
+  outline: 2px solid rgb(var(--c-accent));
   outline-offset: 3px;
 }
 
@@ -33,7 +76,7 @@ h3 {
 }
 
 ::selection {
-  background: #e4ebf3;
+  background: rgb(var(--c-violet) / 0.25);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -87,15 +130,15 @@ h3 {
   }
 
   .btn-primary {
-    @apply btn bg-navy text-white hover:bg-navy-dark disabled:opacity-60;
+    @apply btn bg-gradient-to-r from-navy to-navy-dark text-white shadow-card hover:shadow-lift disabled:opacity-60;
   }
 
   .btn-ghost {
-    @apply btn border border-line bg-card text-ink shadow-card hover:bg-wash;
+    @apply btn border border-line bg-card text-ink shadow-card hover:border-accent hover:bg-wash;
   }
 
   .btn-on-dark {
-    @apply btn bg-white text-navy hover:bg-wash;
+    @apply btn bg-white text-[#311f94] hover:bg-[#efecfa];
   }
 
   .btn-on-dark-ghost {
@@ -103,6 +146,30 @@ h3 {
   }
 
   .panel {
-    @apply rounded-lg border border-line bg-card shadow-card;
+    @apply rounded-xl border border-line bg-card shadow-card transition-shadow duration-200;
+  }
+
+  .panel:hover {
+    @apply shadow-lift;
+  }
+
+  .tile {
+    @apply rounded-xl border border-line bg-card shadow-card transition duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-lift;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-navy via-violet to-accent bg-clip-text text-transparent dark:from-violet dark:via-violet dark:to-accent;
+  }
+
+  table {
+    @apply rounded-xl;
+  }
+
+  thead.bg-wash {
+    @apply bg-gradient-to-r from-wash to-card;
+  }
+
+  tbody tr {
+    @apply transition-colors hover:bg-wash/60;
   }
 }

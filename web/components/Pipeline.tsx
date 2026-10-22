@@ -33,7 +33,7 @@ export function Pipeline() {
         {stages.map((stage, index) => (
           <li key={stage.title} className="relative flex flex-col">
             <div className="mb-3 flex lg:justify-center">
-              <span className="relative z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-navy text-sm font-semibold text-white ring-4 ring-paper">
+              <span className="relative z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-navy to-teal text-sm font-semibold text-white ring-4 ring-paper">
                 {index + 1}
               </span>
             </div>

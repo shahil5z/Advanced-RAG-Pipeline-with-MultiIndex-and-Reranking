@@ -18,18 +18,18 @@ export function ArchitectureDiagram() {
         </desc>
         {boxes.map((box, index) => (
           <g key={box.label}>
-            {index > 0 ? <line x1={box.x - 20} y1={48} x2={box.x} y2={48} stroke="#5c6b82" strokeWidth="1.5" /> : null}
-            <rect x={box.x} y={24} width="112" height="48" rx="4" fill="#ffffff" stroke="#d5dee8" />
-            <text x={box.x + 56} y={52} textAnchor="middle" fill="#101828" fontSize="12" fontFamily="Source Sans 3, sans-serif">
+            {index > 0 ? <line x1={box.x - 20} y1={48} x2={box.x} y2={48} stroke="rgb(var(--c-steel))" strokeWidth="1.5" /> : null}
+            <rect x={box.x} y={24} width="112" height="48" rx="4" fill="rgb(var(--c-card))" stroke="rgb(var(--c-line))" />
+            <text x={box.x + 56} y={52} textAnchor="middle" fill="rgb(var(--c-ink))" fontSize="12" fontFamily="Source Sans 3, sans-serif">
               {box.label}
             </text>
           </g>
         ))}
-        <rect x="280" y="100" width="240" height="40" rx="4" fill="#e8eef5" stroke="#d5dee8" />
-        <text x="400" y="124" textAnchor="middle" fill="#101828" fontSize="12" fontFamily="Source Sans 3, sans-serif">
+        <rect x="280" y="100" width="240" height="40" rx="4" fill="rgb(var(--c-wash))" stroke="rgb(var(--c-line))" />
+        <text x="400" y="124" textAnchor="middle" fill="rgb(var(--c-ink))" fontSize="12" fontFamily="Source Sans 3, sans-serif">
           Local traces and request events
         </text>
-        <line x1="468" y1="72" x2="400" y2="100" stroke="#5c6b82" strokeWidth="1.5" />
+        <line x1="468" y1="72" x2="400" y2="100" stroke="rgb(var(--c-steel))" strokeWidth="1.5" />
       </svg>
     </figure>
   );
