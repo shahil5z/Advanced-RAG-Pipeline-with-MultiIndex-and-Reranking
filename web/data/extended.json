@@ -1,0 +1,167 @@
+{
+  "measured_at": "2026-10-22T15:32:07+00:00",
+  "setup": {
+    "dataset_id": "7b5bd75dd2e4",
+    "chunks": 1177,
+    "embedding_model": "all-MiniLM-L6-v2",
+    "chunk_size": 1000,
+    "chunk_overlap": 200,
+    "index_type": "flat",
+    "hybrid": {
+      "dense_top_k": 20,
+      "bm25_top_k": 20,
+      "fusion": "rrf",
+      "rrf_k": 60,
+      "final_top_k": 5
+    }
+  },
+  "hybrid": [
+    {
+      "name": "dense_flat",
+      "questions": 40,
+      "k": 5,
+      "recall_at_k": 0.8333333333333334,
+      "precision_at_k": 0.185,
+      "mrr": 0.6291666666666667,
+      "ndcg": 0.6702158217124312,
+      "citation_precision": 0.22875,
+      "retrieval_mean_ms": 4.9279954250096125,
+      "retrieval_p50_ms": 4.769296499944176,
+      "retrieval_p95_ms": 5.961978300047121
+    },
+    {
+      "name": "dense_flat_bm25_rerank",
+      "questions": 40,
+      "k": 5,
+      "recall_at_k": 0.8333333333333334,
+      "precision_at_k": 0.185,
+      "mrr": 0.7791666666666667,
+      "ndcg": 0.7842876392515666,
+      "citation_precision": 0.22875,
+      "retrieval_mean_ms": 6.328094525019878,
+      "retrieval_p50_ms": 6.13512849986364,
+      "retrieval_p95_ms": 7.80969270076639
+    },
+    {
+      "name": "bm25_only",
+      "questions": 40,
+      "k": 5,
+      "recall_at_k": 0.8333333333333334,
+      "precision_at_k": 0.18,
+      "mrr": 0.78125,
+      "ndcg": 0.778261543220673,
+      "citation_precision": 0.23166666666666663,
+      "retrieval_mean_ms": 1.274690474997442,
+      "retrieval_p50_ms": 1.2250475001565064,
+      "retrieval_p95_ms": 2.016593849293713
+    },
+    {
+      "name": "hybrid_rrf",
+      "questions": 40,
+      "k": 5,
+      "recall_at_k": 0.8583333333333334,
+      "precision_at_k": 0.19,
+      "mrr": 0.7604166666666667,
+      "ndcg": 0.7717942436250014,
+      "citation_precision": 0.23041666666666666,
+      "retrieval_mean_ms": 57.95339702497131,
+      "retrieval_p50_ms": 54.896968999855744,
+      "retrieval_p95_ms": 63.341665199686645
+    },
+    {
+      "name": "hybrid_rrf_bm25_rerank",
+      "questions": 40,
+      "k": 5,
+      "recall_at_k": 0.8583333333333334,
+      "precision_at_k": 0.19,
+      "mrr": 0.8208333333333334,
+      "ndcg": 0.8187869785932398,
+      "citation_precision": 0.23041666666666666,
+      "retrieval_mean_ms": 115.82822552500147,
+      "retrieval_p50_ms": 105.93472699974882,
+      "retrieval_p95_ms": 168.16943200010417
+    }
+  ],
+  "generation": {
+    "measured_at": "2026-10-22T15:32:07+00:00",
+    "retrieval": "dense_flat_bm25_rerank (flat_baseline settings), top 5 chunks",
+    "temperature": 0,
+    "judge_model": "gpt-4.1-mini",
+    "label": "Estimated OpenAI API cost from token usage and list prices per 1M tokens.",
+    "models": [
+      {
+        "model": "gpt-4o-mini",
+        "questions": 40,
+        "input_per_million_usd": 0.15,
+        "output_per_million_usd": 0.6,
+        "correctness": 0.925,
+        "faithfulness": 1.0,
+        "median_latency_ms": 1515.5127509997328,
+        "p95_latency_ms": 3036.7229693506024,
+        "avg_input_tokens": 1218.425,
+        "avg_output_tokens": 43.675,
+        "cost_per_query_usd": 0.00020896875,
+        "total_cost_usd": 0.00835875
+      },
+      {
+        "model": "gpt-4.1-nano",
+        "questions": 40,
+        "input_per_million_usd": 0.1,
+        "output_per_million_usd": 0.4,
+        "correctness": 0.9,
+        "faithfulness": 0.975,
+        "median_latency_ms": 717.5912469997456,
+        "p95_latency_ms": 1336.032920900652,
+        "avg_input_tokens": 1218.425,
+        "avg_output_tokens": 39.575,
+        "cost_per_query_usd": 0.00013767250000000001,
+        "total_cost_usd": 0.0055069
+      },
+      {
+        "model": "gpt-4.1-mini",
+        "questions": 40,
+        "input_per_million_usd": 0.4,
+        "output_per_million_usd": 1.6,
+        "correctness": 0.95,
+        "faithfulness": 1.0,
+        "median_latency_ms": 1022.5609649996841,
+        "p95_latency_ms": 1608.6845565501783,
+        "avg_input_tokens": 1218.425,
+        "avg_output_tokens": 53.375,
+        "cost_per_query_usd": 0.00057277,
+        "total_cost_usd": 0.022910800000000002
+      }
+    ],
+    "judge_cost_usd": 0.07720159999999998,
+    "total_estimated_spend_usd": 0.11397804999999998
+  },
+  "per_query_cost": {
+    "gpt-4o-mini": {
+      "min_cost_usd": 0.00016035,
+      "median_cost_usd": 0.0002139,
+      "max_cost_usd": 0.0002613,
+      "min_tokens": 907,
+      "median_tokens": 1290.5,
+      "max_tokens": 1492,
+      "judge_cost_per_query_usd": 0.0006432300000000001
+    },
+    "gpt-4.1-nano": {
+      "min_cost_usd": 9.850000000000001e-05,
+      "median_cost_usd": 0.00013965,
+      "max_cost_usd": 0.0001682,
+      "min_tokens": 862,
+      "median_tokens": 1294.0,
+      "max_tokens": 1479,
+      "judge_cost_per_query_usd": 0.00063909
+    },
+    "gpt-4.1-mini": {
+      "min_cost_usd": 0.000426,
+      "median_cost_usd": 0.0005718000000000001,
+      "max_cost_usd": 0.0008096000000000001,
+      "min_tokens": 937,
+      "median_tokens": 1304.0,
+      "max_tokens": 1493,
+      "judge_cost_per_query_usd": 0.0006477200000000001
+    }
+  }
+}

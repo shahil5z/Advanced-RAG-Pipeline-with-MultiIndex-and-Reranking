@@ -23,7 +23,7 @@
     },
     {
       "page": 5,
-      "text": "The public demo does not call OpenAI. Local generation sends the retrieved chunk text to the configured OpenAI model."
+      "text": "The lab chunker splits each page into chunks of 1000 characters with an overlap of 200 characters and keeps the page number."
     }
   ]
 }

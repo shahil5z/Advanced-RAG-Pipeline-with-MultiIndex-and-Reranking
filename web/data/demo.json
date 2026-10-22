@@ -154,37 +154,6 @@
           "text": "BM25 reranking scores a retrieved chunk by its row in the full corpus. A higher BM25\nscore is ordered first."
         }
       ]
-    },
-    {
-      "id": "d6",
-      "question": "Does the public demo call OpenAI?",
-      "answer": "The public demo does not call OpenAI. Local generation sends the retrieved chunk text\nto the configured OpenAI model.",
-      "retrieval_latency_ms": 3.5416999999142718,
-      "configuration": {
-        "index_type": "flat",
-        "top_k": 2,
-        "reranking": true
-      },
-      "chunks": [
-        {
-          "rank": 1,
-          "document": "lab-notes.pdf",
-          "page": 5,
-          "score": 3.7322626516486253,
-          "score_type": "bm25",
-          "distance": 0.747964084148407,
-          "text": "The public demo does not call OpenAI. Local generation sends the retrieved chunk text\nto the configured OpenAI model."
-        },
-        {
-          "rank": 2,
-          "document": "lab-notes.pdf",
-          "page": 3,
-          "score": 0.0,
-          "score_type": "bm25",
-          "distance": 1.9313241243362427,
-          "text": "BM25 reranking scores a retrieved chunk by its row in the full corpus. A higher BM25\nscore is ordered first."
-        }
-      ]
     }
   ]
 }

@@ -4,7 +4,7 @@ import failures from "@/data/failures.json";
 
 export const metadata: Metadata = {
   title: "Failure Analysis",
-  description: "Questions where stored flat baseline recall was below 1.",
+  description: "Questions where flat baseline recall was below 1, with retrieved pages and causes.",
 };
 
 export default function FailurePage() {
@@ -13,7 +13,7 @@ export default function FailurePage() {
       <header className="max-w-3xl space-y-3">
         <h1 className="text-4xl sm:text-5xl">Failure analysis</h1>
         <p className="leading-7 text-muted">
-          {failures.note} {failures.retrieval_misses} questions have recall 0 (`retrieval_miss`). {failures.partial_page_coverage} are partial (`partial_page_coverage`). Semantic, lexical, document, page, boundary, distractor, and filter labels were not assigned.
+          {failures.note} {failures.retrieval_misses} questions have recall 0 (`retrieval_miss`). {failures.partial_page_coverage} are partial (`partial_page_coverage`). Fine-grained causes: {Object.entries(failures.fine_causes).map(([name, count]) => `${name} ${count}`).join(", ")}. Retrieved pages are from the rerun on {failures.measured_at.slice(0, 10)}.
         </p>
       </header>
 
@@ -27,6 +27,8 @@ export default function FailurePage() {
               <th className="px-3 py-2 font-semibold">Retrieved pages</th>
               <th className="px-3 py-2 font-semibold">Recall@5</th>
               <th className="px-3 py-2 font-semibold">Category</th>
+              <th className="px-3 py-2 font-semibold">Cause</th>
+              <th className="px-3 py-2 font-semibold">Hybrid Recall@5</th>
             </tr>
           </thead>
           <tbody>
@@ -41,19 +43,32 @@ export default function FailurePage() {
                     </span>
                   ))}
                 </td>
-                <td className="px-3 py-3">not stored</td>
+                <td className="px-3 py-3">
+                  {item.retrieved_pages.map((page, index) => (
+                    <span key={`${page.document_id}-${page.page}-${index}`} className="block">
+                      p{page.page}
+                    </span>
+                  ))}
+                </td>
                 <td className="px-3 py-3 tabular-nums">{item.recall_at_k.toFixed(3)}</td>
                 <td className="px-3 py-3">{item.category}</td>
+                <td className="px-3 py-3">{item.fine_cause}</td>
+                <td className="px-3 py-3 tabular-nums">{item.hybrid_recall_at_k.toFixed(3)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <section className="max-w-3xl space-y-3">
+      <section className="max-w-3xl space-y-4">
         <h2 className="text-2xl">Cause and mitigation</h2>
-        <p className="leading-7">{failures.failures[0]?.likely_cause}</p>
-        <p className="leading-7 text-muted">{failures.failures[0]?.mitigation}</p>
+        {failures.failures.map((item) => (
+          <div key={item.id} className="space-y-1">
+            <p className="font-semibold">{item.id}: {item.fine_cause}</p>
+            <p className="leading-7">{item.likely_cause}</p>
+            <p className="leading-7 text-muted">{item.mitigation}</p>
+          </div>
+        ))}
       </section>
     </div>
   );

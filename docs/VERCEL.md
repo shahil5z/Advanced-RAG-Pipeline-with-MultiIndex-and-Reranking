@@ -26,6 +26,6 @@ Set these in the Vercel project for Production, Preview, and Development. None o
 
 The benchmark page and the lab-note corpus are committed in `web/data`. A deployment does not need the source PDFs, a vector database, or a model cache.
 
-Public mode is this site. It does not run FastAPI, Qdrant, Kubernetes, or a collector. Local engineering mode is Docker Compose or the manifests in `k8s/`, on a machine you control. No new environment variable is required for public mode.
+Public mode is this site. It does not run FastAPI, Qdrant, Kubernetes, or a collector. Local engineering mode is Docker Compose or the manifests in `k8s/`, on a machine you control. The PDF question-answering section needs OPENAI_API_KEY as a sensitive, server-only production variable. Never prefix it with NEXT_PUBLIC. See docs/pdf-qa.md.
 
 After changing `OPENAI_API_KEY` or `NEXT_PUBLIC_SITE_URL`, redeploy so the server build and the metadata pick up the new values.

@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from advanced_rag.analysis import build_failure_report
+from advanced_rag.analysis import CAUSES, build_failure_report
 from advanced_rag.api.app import Settings, create_app
 from advanced_rag.api.limiter import RateLimiter
 from advanced_rag.cost import (
@@ -322,7 +322,7 @@ def test_model_list_is_checked_against_the_account(monkeypatch):
         validate_models(["missing-model"], {"gpt-4.1-mini"})
 
 
-def test_failure_analysis_uses_only_stored_metrics():
+def test_failure_analysis_uses_stored_metrics_and_retrieved_pages():
     report = build_failure_report()
     with open("results/experiments/latest.json", encoding="utf-8") as handle:
         stored = json.load(handle)
@@ -332,7 +332,8 @@ def test_failure_analysis_uses_only_stored_metrics():
     assert {item["id"] for item in report["failures"]} == expected_ids
     assert report["retrieval_misses"] + report["partial_page_coverage"] == len(report["failures"])
     for item in report["failures"]:
-        assert item["retrieved_pages"] is None
+        assert item["retrieved_pages"]
+        assert item["fine_cause"] in CAUSES
         assert item["expected_pages"]
         assert item["likely_cause"]
         assert item["mitigation"]

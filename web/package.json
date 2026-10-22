@@ -5,12 +5,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "tsx lib/rag/engine.test.ts"
+    "test": "tsx lib/rag/engine.test.ts && tsx lib/pdf/pdf.test.ts"
   },
   "dependencies": {
     "next": "^15.5.4",
+    "pdf-lib": "^1.17.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "unpdf": "^1.7.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.0",

@@ -59,4 +59,6 @@ Liveness probes call /health. Readiness probes call /ready. The API container re
 
 ## Cost
 
-`python scripts/cost_experiment.py` prints `not yet run` when the key is unset. It does not invent a bill. The label on a real run is: Estimated OpenAI API cost based on configured model pricing.
+`python scripts/cost_experiment.py` exits early when the key is unset. It does not invent a bill. The label on a real run is: Estimated OpenAI API cost based on configured model pricing.
+
+`python scripts/extended_eval.py` runs hybrid retrieval, the model comparison, and the per-query cost breakdown on the 40 questions and writes results/extended/. See docs/extended-evaluation.md for the measured numbers.

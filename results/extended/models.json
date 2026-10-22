@@ -1,0 +1,53 @@
+{
+  "measured_at": "2026-10-22T15:32:07+00:00",
+  "retrieval": "dense_flat_bm25_rerank (flat_baseline settings), top 5 chunks",
+  "temperature": 0,
+  "judge_model": "gpt-4.1-mini",
+  "label": "Estimated OpenAI API cost from token usage and list prices per 1M tokens.",
+  "models": [
+    {
+      "model": "gpt-4o-mini",
+      "questions": 40,
+      "input_per_million_usd": 0.15,
+      "output_per_million_usd": 0.6,
+      "correctness": 0.925,
+      "faithfulness": 1.0,
+      "median_latency_ms": 1515.5127509997328,
+      "p95_latency_ms": 3036.7229693506024,
+      "avg_input_tokens": 1218.425,
+      "avg_output_tokens": 43.675,
+      "cost_per_query_usd": 0.00020896875,
+      "total_cost_usd": 0.00835875
+    },
+    {
+      "model": "gpt-4.1-nano",
+      "questions": 40,
+      "input_per_million_usd": 0.1,
+      "output_per_million_usd": 0.4,
+      "correctness": 0.9,
+      "faithfulness": 0.975,
+      "median_latency_ms": 717.5912469997456,
+      "p95_latency_ms": 1336.032920900652,
+      "avg_input_tokens": 1218.425,
+      "avg_output_tokens": 39.575,
+      "cost_per_query_usd": 0.00013767250000000001,
+      "total_cost_usd": 0.0055069
+    },
+    {
+      "model": "gpt-4.1-mini",
+      "questions": 40,
+      "input_per_million_usd": 0.4,
+      "output_per_million_usd": 1.6,
+      "correctness": 0.95,
+      "faithfulness": 1.0,
+      "median_latency_ms": 1022.5609649996841,
+      "p95_latency_ms": 1608.6845565501783,
+      "avg_input_tokens": 1218.425,
+      "avg_output_tokens": 53.375,
+      "cost_per_query_usd": 0.00057277,
+      "total_cost_usd": 0.022910800000000002
+    }
+  ],
+  "judge_cost_usd": 0.07720159999999998,
+  "total_estimated_spend_usd": 0.11397804999999998
+}
