@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api
+  namespace: rag-eval
+data:
+  RAG_HOST: "0.0.0.0"
+  RAG_PORT: "8000"
+  RAG_ENABLE_OPENAI: "0"
+  RAG_LOG_CONTENT: "0"
+  RAG_RATE_LIMIT_PER_MINUTE: "30"
+  RAG_CORS_ORIGINS: "http://127.0.0.1:3000"
+  QDRANT_URL: "http://qdrant:6333"
