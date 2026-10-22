@@ -27,13 +27,7 @@ const stages = [
 
 export function Pipeline() {
   return (
-    <section className="space-y-6" aria-labelledby="pipeline-heading">
-      <div className="max-w-2xl">
-        <h2 id="pipeline-heading" className="text-3xl">
-          From a PDF to a ranked answer
-        </h2>
-        <p className="mt-2 text-base leading-7 text-muted">Six stages. The public demo runs the same order on a short lab-note corpus.</p>
-      </div>
+    <section aria-label="Pipeline stages">
       <ol className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
         <span className="pointer-events-none absolute left-8 right-8 top-[18px] hidden h-px bg-line lg:block" aria-hidden="true" />
         {stages.map((stage, index) => (

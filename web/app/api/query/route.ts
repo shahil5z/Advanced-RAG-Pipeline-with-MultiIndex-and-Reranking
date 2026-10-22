@@ -1,3 +1,4 @@
+import { parseQuery } from "@/lib/rag/request";
 import { runQuery } from "@/lib/rag/query";
 
 export const runtime = "nodejs";
@@ -38,8 +39,8 @@ export async function POST(request: Request) {
   let body: unknown;
   try {
     const raw = await request.text();
-    if (raw.length > 8_000) {
-      return Response.json({ error: "The question is too long." }, { status: 413 });
+    if (raw.length > 20_000) {
+      return Response.json({ error: "The request is too large." }, { status: 413 });
     }
     body = JSON.parse(raw);
   } catch {
@@ -49,33 +50,13 @@ export async function POST(request: Request) {
     return Response.json({ error: "Send a JSON body with a question." }, { status: 400 });
   }
 
-  const record = body as Record<string, unknown>;
-  if (typeof record.question !== "string") {
-    return Response.json({ error: "Question must be a string." }, { status: 400 });
-  }
-  const question = record.question.trim();
-  if (!question) {
-    return Response.json({ error: "Enter a question first." }, { status: 400 });
-  }
-  if (question.length > 500) {
-    return Response.json({ error: "Keep the question under 500 characters." }, { status: 400 });
-  }
-
-  const reranking = record.reranking === undefined ? true : record.reranking;
-  if (typeof reranking !== "boolean") {
-    return Response.json({ error: "Reranking must be true or false." }, { status: 400 });
-  }
-
-  let topK = 3;
-  if (record.top_k !== undefined) {
-    if (typeof record.top_k !== "number" || !Number.isInteger(record.top_k) || record.top_k < 1 || record.top_k > 6) {
-      return Response.json({ error: "top_k must be an integer from 1 to 6." }, { status: 400 });
-    }
-    topK = record.top_k;
+  const parsed = parseQuery(body as Record<string, unknown>);
+  if (!parsed.ok) {
+    return Response.json({ error: parsed.error }, { status: parsed.status });
   }
 
   try {
-    const result = await runQuery({ question, reranking, topK });
+    const result = await runQuery(parsed.value);
     return Response.json(result, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("query failed", error instanceof Error ? error.message : "unknown");
