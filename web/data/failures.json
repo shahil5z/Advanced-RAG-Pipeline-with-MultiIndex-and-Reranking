@@ -1,6 +1,7 @@
 {
   "experiment": "flat_baseline",
   "questions": 40,
+  "measured_at": "2026-10-22T15:32:07+00:00",
   "failures": [
     {
       "id": "q02",
@@ -15,14 +16,38 @@
           "page": 20
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 24
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 5
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 30
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 24
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 21
+        }
+      ],
       "recall_at_k": 0.5,
       "mrr": 0.5,
       "ndcg": 0.38685280723454163,
+      "hybrid_recall_at_k": 0.5,
+      "bm25_recall_at_k": 0.5,
       "category": "partial_page_coverage",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "multi_page_partial",
+      "likely_cause": "The answer is labelled on more than one page. Retrieval found at least one labelled page and missed the others, and the remaining slots went to pages that repeat the same facts.",
+      "mitigation": "Widen K or deduplicate near-identical pages before the final top 5.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     },
     {
       "id": "q03",
@@ -33,14 +58,38 @@
           "page": 5
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 25
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 30
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 24
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 24
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 24
+        }
+      ],
       "recall_at_k": 0.0,
       "mrr": 0.0,
       "ndcg": 0.0,
+      "hybrid_recall_at_k": 0.0,
+      "bm25_recall_at_k": 0.0,
       "category": "retrieval_miss",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "same_document_distractor",
+      "likely_cause": "All retrieved pages come from the right report, but from sections that discuss the same topic in other words. Neither dense, BM25, nor hybrid retrieval reached the labelled page.",
+      "mitigation": "Add a cross-encoder or LLM rerank over a wider candidate set, or tag section headings in metadata.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     },
     {
       "id": "q05",
@@ -55,14 +104,38 @@
           "page": 20
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 22
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 21
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 20
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 23
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 20
+        }
+      ],
       "recall_at_k": 0.5,
       "mrr": 0.3333333333333333,
       "ndcg": 0.3065735963827292,
+      "hybrid_recall_at_k": 0.5,
+      "bm25_recall_at_k": 0.5,
       "category": "partial_page_coverage",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "multi_page_partial",
+      "likely_cause": "The answer is labelled on more than one page. Retrieval found at least one labelled page and missed the others, and the remaining slots went to pages that repeat the same facts.",
+      "mitigation": "Widen K or deduplicate near-identical pages before the final top 5.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     },
     {
       "id": "q09",
@@ -81,14 +154,38 @@
           "page": 47
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 74
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 71
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 47
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 74
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 2
+        }
+      ],
       "recall_at_k": 0.3333333333333333,
       "mrr": 0.3333333333333333,
       "ndcg": 0.23463936301137822,
+      "hybrid_recall_at_k": 0.3333333333333333,
+      "bm25_recall_at_k": 0.3333333333333333,
       "category": "partial_page_coverage",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "multi_page_partial",
+      "likely_cause": "The answer is labelled on more than one page. Retrieval found at least one labelled page and missed the others, and the remaining slots went to pages that repeat the same facts.",
+      "mitigation": "Widen K or deduplicate near-identical pages before the final top 5.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     },
     {
       "id": "q11",
@@ -99,14 +196,38 @@
           "page": 10
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 25
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 0
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 6
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 5
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 74
+        }
+      ],
       "recall_at_k": 0.0,
       "mrr": 0.0,
       "ndcg": 0.0,
+      "hybrid_recall_at_k": 1.0,
+      "bm25_recall_at_k": 1.0,
       "category": "retrieval_miss",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "lexical_mismatch",
+      "likely_cause": "Dense search ranked the labelled page outside the top 5, while BM25 alone and hybrid RRF both retrieved it. The question shares exact terms with the page that the embedding did not weight.",
+      "mitigation": "Use hybrid retrieval (dense + BM25 fused with RRF). On this question it recovers the page.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     },
     {
       "id": "q18",
@@ -117,14 +238,38 @@
           "page": 20
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 82
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 83
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 83
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 47
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 0
+        }
+      ],
       "recall_at_k": 0.0,
       "mrr": 0.0,
       "ndcg": 0.0,
+      "hybrid_recall_at_k": 1.0,
+      "bm25_recall_at_k": 1.0,
       "category": "retrieval_miss",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "lexical_mismatch",
+      "likely_cause": "Dense search ranked the labelled page outside the top 5, while BM25 alone and hybrid RRF both retrieved it. The question shares exact terms with the page that the embedding did not weight.",
+      "mitigation": "Use hybrid retrieval (dense + BM25 fused with RRF). On this question it recovers the page.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     },
     {
       "id": "q33",
@@ -135,14 +280,38 @@
           "page": 42
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 76
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 14
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 18
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 79
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 14
+        }
+      ],
       "recall_at_k": 0.0,
       "mrr": 0.0,
       "ndcg": 0.0,
+      "hybrid_recall_at_k": 0.0,
+      "bm25_recall_at_k": 0.0,
       "category": "retrieval_miss",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "same_document_distractor",
+      "likely_cause": "All retrieved pages come from the right report, but from sections that discuss the same topic in other words. Neither dense, BM25, nor hybrid retrieval reached the labelled page.",
+      "mitigation": "Add a cross-encoder or LLM rerank over a wider candidate set, or tag section headings in metadata.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     },
     {
       "id": "q36",
@@ -153,17 +322,47 @@
           "page": 51
         }
       ],
-      "retrieved_pages": null,
+      "retrieved_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 57
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 13
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 52
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 13
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 64
+        }
+      ],
       "recall_at_k": 0.0,
       "mrr": 0.0,
       "ndcg": 0.0,
+      "hybrid_recall_at_k": 0.0,
+      "bm25_recall_at_k": 0.0,
       "category": "retrieval_miss",
-      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
-      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
-      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+      "fine_cause": "adjacent_page",
+      "likely_cause": "A retrieved page sits next to the labelled page. The facts cross a page or chunk boundary, so the neighbouring chunk ranked higher.",
+      "mitigation": "Chunk across page breaks with page ranges in metadata, or count adjacent pages in review.",
+      "evidence": "Retrieved pages from the 2026-10-22 rerun of flat_baseline settings, which matches the stored Recall@5, MRR and nDCG."
     }
   ],
   "retrieval_misses": 5,
   "partial_page_coverage": 3,
-  "note": "Retrieved pages were not stored, so semantic, lexical, document, page, boundary, distractor, and filter categories were not assigned."
+  "fine_causes": {
+    "adjacent_page": 1,
+    "lexical_mismatch": 2,
+    "multi_page_partial": 3,
+    "same_document_distractor": 2
+  },
+  "note": "Retrieved pages were stored on a rerun with the flat_baseline settings. Each miss has a fine-grained cause assigned by fixed rules from those pages."
 }

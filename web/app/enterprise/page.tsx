@@ -53,7 +53,7 @@ export default function EnterprisePage() {
           </div>
           <div>
             <dt className="font-semibold">Auditability</dt>
-            <dd className="mt-1 leading-7 text-muted">The local event row is the audit sketch: who asked is absent until an identity layer exists. What was retrieved can be added once pages are persisted.</dd>
+            <dd className="mt-1 leading-7 text-muted">The local event row is the audit sketch: who asked is absent until an identity layer exists. The evaluation run now stores retrieved pages for every question, which is the shape an audit row would carry.</dd>
           </div>
           <div>
             <dt className="font-semibold">Observability</dt>

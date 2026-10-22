@@ -72,7 +72,9 @@ export async function runQuery(input: {
   passages?: string[];
 }): Promise<QueryResponse> {
   const custom = Boolean(input.passages && input.passages.length > 0);
-  const apiKey = custom ? "" : (process.env.OPENAI_API_KEY?.trim() ?? "");
+  // The lab-note demo stays on hashed vectors unless DEMO_QUERY_OPENAI=1, so the
+  // server key is spent only by the rate-limited PDF routes.
+  const apiKey = custom || process.env.DEMO_QUERY_OPENAI !== "1" ? "" : (process.env.OPENAI_API_KEY?.trim() ?? "");
   let embeddingMode: QueryResponse["embedding_mode"] = "hashing";
   let notice: string | null = custom ? "Pasted passages are embedded for this request only and are not stored." : null;
   let queryVector: number[] | undefined;

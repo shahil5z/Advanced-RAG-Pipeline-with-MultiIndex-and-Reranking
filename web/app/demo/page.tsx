@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { Demo } from "@/components/Demo";
+import { PdfQa } from "@/components/PdfQa";
 import corpus from "@/data/corpus.json";
 import demo from "@/data/demo.json";
 
 export const metadata: Metadata = {
   title: "Demo",
-  description: "Search the lab notes with Flat, HNSW-style, or IVF-style retrieval, and compare BM25 on and off.",
+  description: "Search the lab notes with Flat, HNSW-style, or IVF-style retrieval, or upload a PDF and ask questions about it.",
 };
 
 export default function DemoPage() {
@@ -17,6 +18,7 @@ export default function DemoPage() {
       <Suspense fallback={<p className="shell py-14 text-sm text-muted">Loading the demo…</p>}>
         <Demo questions={questions} />
       </Suspense>
+      <PdfQa />
       <section className="shell pb-4" aria-labelledby="corpus-heading">
         <h2 id="corpus-heading" className="text-3xl">
           Lab-note corpus

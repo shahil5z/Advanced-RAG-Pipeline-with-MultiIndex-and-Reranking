@@ -10,7 +10,7 @@ const cases: Array<[string, string]> = [
   ["How many IVF lists are searched for a query in this lab?", "10 of those lists"],
   ["How does BM25 order the retrieved chunks?", "higher BM25"],
   ["When does recall count a chunk as relevant?", "golden file"],
-  ["Does the public demo call OpenAI?", "does not call OpenAI"],
+  ["What overlap does the lab chunker use?", "overlap of 200"],
 ];
 
 const chunks = getChunks();
