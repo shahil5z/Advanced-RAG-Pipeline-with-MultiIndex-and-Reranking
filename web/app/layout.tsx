@@ -70,9 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Nav />
-        <main id="content" className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
-          {children}
-        </main>
+        <main id="content">{children}</main>
         <Footer />
       </body>
     </html>
