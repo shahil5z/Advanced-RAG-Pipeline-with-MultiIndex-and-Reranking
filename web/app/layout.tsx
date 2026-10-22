@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
+import localFont from "next/font/local";
 
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
@@ -7,18 +7,24 @@ import { SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
-const sans = Source_Sans_3({
-  subsets: ["latin"],
-  weight: ["400", "600"],
+const sans = localFont({
+  src: [
+    { path: "../fonts/source-sans-3-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/source-sans-3-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-sans",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
-const serif = Source_Serif_4({
-  subsets: ["latin"],
-  weight: ["500", "600"],
+const serif = localFont({
+  src: [
+    { path: "../fonts/source-serif-4-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/source-serif-4-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-serif",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
 const description = "A multi-index RAG pipeline with BM25 reranking and a measured retrieval benchmark.";
@@ -64,9 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Nav />
-        <main id="content" className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
-          {children}
-        </main>
+        <main id="content">{children}</main>
         <Footer />
       </body>
     </html>

@@ -13,6 +13,7 @@ module.exports = {
         "navy-dark": "#0c1e2e",
         wash: "#e8eef5",
         accent: "#9a541f",
+        steel: "#5c6b82",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Source Sans 3", "sans-serif"],
@@ -20,6 +21,7 @@ module.exports = {
       },
       boxShadow: {
         card: "0 1px 2px rgba(16, 24, 40, 0.06)",
+        lift: "0 16px 40px rgba(16, 36, 56, 0.12)",
       },
     },
   },

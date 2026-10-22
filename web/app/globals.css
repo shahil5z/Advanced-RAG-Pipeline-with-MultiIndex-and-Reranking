@@ -28,12 +28,42 @@ h3 {
   outline-offset: 3px;
 }
 
-header :focus-visible {
+.on-dark :focus-visible {
   outline-color: #ffffff;
 }
 
 ::selection {
   background: #e4ebf3;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.55s ease both;
+  }
+
+  .rise-2 {
+    animation-delay: 90ms;
+  }
+
+  .rise-3 {
+    animation-delay: 160ms;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -48,8 +78,12 @@ header :focus-visible {
 }
 
 @layer components {
+  .shell {
+    @apply mx-auto max-w-6xl px-4;
+  }
+
   .btn {
-    @apply inline-flex min-h-11 items-center justify-center rounded-md px-4 text-sm font-semibold;
+    @apply inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm font-semibold transition-colors;
   }
 
   .btn-primary {
@@ -60,7 +94,15 @@ header :focus-visible {
     @apply btn border border-line bg-card text-ink shadow-card hover:bg-wash;
   }
 
+  .btn-on-dark {
+    @apply btn bg-white text-navy hover:bg-wash;
+  }
+
+  .btn-on-dark-ghost {
+    @apply btn border border-white/40 bg-white/5 text-white hover:bg-white/15;
+  }
+
   .panel {
-    @apply rounded-lg border border-line bg-card shadow-card;
+    @apply rounded-2xl border border-line bg-card shadow-card;
   }
 }

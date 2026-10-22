@@ -1,8 +1,12 @@
+<p align="center">
+  <img src="web/public/logo.png" alt="RAG Evaluation Lab" width="200" />
+</p>
+
 <div align="center">
 
-<img src="web/public/logo.png" alt="RAG Evaluation Lab" width="96" />
-
 <h1>Advanced RAG Evaluation Lab</h1>
+
+<br />
 
 <p>
   <a href="https://www.python.org/"><img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" /></a>

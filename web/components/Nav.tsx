@@ -14,16 +14,16 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-10 bg-navy text-white">
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-        <Link href="/" className="flex items-center gap-3 rounded-md">
-          <img src="/logo.png" alt="" width={44} height={44} className="h-11 w-11 rounded-md ring-2 ring-white/80" />
-          <span>
-            <span className="block text-sm font-semibold leading-5 text-white">RAG Evaluation Lab</span>
-            <span className="block text-xs leading-4 text-white/80">Shahil Haque</span>
+    <header className="sticky top-0 z-20 border-b border-line/80 bg-paper/90 backdrop-blur">
+      <div className="shell flex items-center justify-between gap-3 py-2.5">
+        <Link href="/" className="flex min-w-0 items-center gap-3 rounded-lg">
+          <img src="/logo.png" alt="" width={56} height={56} className="h-12 w-12 rounded-lg shadow-card sm:h-14 sm:w-14" />
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-semibold leading-5 text-ink">RAG Evaluation Lab</span>
+            <span className="block text-xs leading-4 text-muted">Shahil Haque</span>
           </span>
         </Link>
-        <nav aria-label="Primary" className="flex flex-wrap gap-1">
+        <nav aria-label="Primary" className="flex flex-wrap justify-end gap-1">
           {links.map((link) => {
             const current = pathname === link.href;
             return (
@@ -31,8 +31,8 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 aria-current={current ? "page" : undefined}
-                className={`inline-flex min-h-11 items-center rounded-md px-3 text-sm font-semibold ${
-                  current ? "bg-white text-navy" : "text-white/90 hover:bg-white/10"
+                className={`inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold ${
+                  current ? "bg-navy text-white" : "text-ink hover:bg-wash"
                 }`}
               >
                 {link.label}
@@ -41,7 +41,6 @@ export function Nav() {
           })}
         </nav>
       </div>
-      <div className="h-1 bg-accent" aria-hidden="true" />
     </header>
   );
 }
