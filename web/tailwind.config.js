@@ -19,8 +19,8 @@ module.exports = {
         "violet": "rgb(var(--c-violet) / <alpha-value>)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "Source Sans 3", "sans-serif"],
-        serif: ["var(--font-serif)", "Source Serif 4", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       boxShadow: {
         card: "0 1px 2px rgb(var(--c-shadow) / 0.08), 0 4px 14px rgb(var(--c-shadow) / 0.06)",

@@ -9,23 +9,17 @@ import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const sans = localFont({
-  src: [
-    { path: "../fonts/source-sans-3-latin-400-normal.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/source-sans-3-latin-600-normal.woff2", weight: "600", style: "normal" },
-  ],
+  src: [{ path: "../fonts/inter-latin-wght.woff2", weight: "100 900", style: "normal" }],
   variable: "--font-sans",
   display: "swap",
   adjustFontFallback: "Arial",
 });
 
-const serif = localFont({
-  src: [
-    { path: "../fonts/source-serif-4-latin-500-normal.woff2", weight: "500", style: "normal" },
-    { path: "../fonts/source-serif-4-latin-600-normal.woff2", weight: "600", style: "normal" },
-  ],
-  variable: "--font-serif",
+const mono = localFont({
+  src: [{ path: "../fonts/jetbrains-mono-latin-wght.woff2", weight: "100 800", style: "normal" }],
+  variable: "--font-mono",
   display: "swap",
-  adjustFontFallback: "Times New Roman",
+  adjustFontFallback: false,
 });
 
 const description = "A reproducible retrieval and generation evaluation system for document-grounded AI.";
@@ -68,7 +62,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
@@ -78,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Nav />
         <p className="border-b border-line bg-gradient-to-r from-navy/10 via-violet/10 to-teal/10 px-4 py-2 text-center text-sm leading-6 text-muted">
-          Public mode shows prepared results in the browser. Local engineering mode adds FastAPI, Qdrant, OpenTelemetry, and Kubernetes on your machine.
+          The public demo answers questions live from your PDF or the built-in lab notes. Local engineering mode adds FastAPI, Qdrant, OpenTelemetry, and Kubernetes on your machine.
         </p>
         <main id="content">{children}</main>
         <Footer />

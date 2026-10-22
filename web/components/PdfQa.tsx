@@ -239,7 +239,7 @@ export function PdfQa() {
         ) : null}
         {!result && !error && stage !== "asking" ? (
           <div className="panel border-dashed px-5 py-10">
-            <p className="font-serif text-2xl">Answers appear here</p>
+            <p className="text-2xl font-semibold">Answers appear here</p>
             <p className="mt-2 max-w-md text-sm leading-6 text-muted">
               Upload a PDF, then pick a suggested question or type your own. Every number in the result is measured for that request.
             </p>

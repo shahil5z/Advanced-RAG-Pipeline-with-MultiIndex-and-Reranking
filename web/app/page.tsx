@@ -54,7 +54,7 @@ export default function HomePage() {
         ].map(([label, value]) => (
           <div key={label} className="bg-card px-4 py-4">
             <dt className="text-sm text-muted">{label}</dt>
-            <dd className="mt-1 font-serif text-2xl tabular-nums text-navy dark:text-violet">{value}</dd>
+            <dd className="mt-1 text-2xl font-semibold tabular-nums text-navy dark:text-violet">{value}</dd>
           </div>
         ))}
       </dl>

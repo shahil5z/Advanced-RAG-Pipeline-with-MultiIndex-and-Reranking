@@ -7,7 +7,7 @@ The demo page has a second section where a visitor uploads a PDF and asks questi
 1. The browser checks the type and size (PDF, at most 10 MB). Files above 3 MB are split by page range with pdf-lib so each request stays under the Vercel request body limit.
 2. POST /api/pdf/extract checks the declared total size, the part size, and the `%PDF-` header, then extracts text per page with unpdf in a Node function.
 3. POST /api/pdf/index splits pages into 900 character chunks with 150 characters of overlap, keeps the page number on each chunk, embeds them with text-embedding-3-small at 512 dimensions, and writes four suggested questions with gpt-4o-mini in JSON mode. The vectors are returned to the browser as int8 base64. Nothing is stored on the server.
-4. POST /api/pdf/ask embeds the question, ranks chunks by cosine similarity and by BM25, fuses the two lists with reciprocal rank fusion (k = 60), optionally reranks the top 10 with gpt-4o-mini, and answers from the top 5 with page citations. When the passages do not support an answer, the reply is `Not found in document.`
+4. POST /api/pdf/ask embeds the question, ranks chunks by cosine similarity and by BM25, fuses the two lists with reciprocal rank fusion (k = 60), optionally reranks the top 10 with gpt-4o-mini, and answers from the top 5 with page citations. Every answer carries inline (p. N) citations: references such as (page 3) or [p. 3] are normalized, pages outside the retrieved passages are removed, and the cited pages are appended when the text has none. When the passages do not support an answer, the reply is `Not found in document.`
 
 ## Limits
 
@@ -27,7 +27,7 @@ OPENAI_API_KEY is a server-only, sensitive environment variable in the Vercel pr
 
 - Password-protected and damaged files return a clear 422 message. Encrypted files above 3 MB cannot be split in the browser and get their own message.
 - PDFs without a text layer (scanned images) are detected after extraction and rejected before any OpenAI call, without using a test.
-- BM25 tokenizes Unicode letters and numbers, and splits Chinese, Japanese and Korean runs into character bigrams, so non-English documents rank lexically. Suggestions follow the document language and answers follow the question language.
+- BM25 tokenizes Unicode letters and numbers, and splits Chinese, Japanese and Korean runs into character bigrams, so non-English documents rank lexically. Suggested questions are always written in English, whatever the document language. Each set is checked with a language heuristic and regenerated, up to three attempts, when a question is not English. Answers are written in English unless the question itself is written in, or asks for, another language.
 - OpenAI calls time out after 25 seconds and retry up to three times on HTTP 429 and 5xx, honouring Retry-After.
 
 ## Live numbers

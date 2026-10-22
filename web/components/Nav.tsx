@@ -20,12 +20,17 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-paper/85 backdrop-blur supports-[backdrop-filter]:bg-paper/70">
-      <div className="shell flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2">
-        <Link href="/" className="gradient-text rounded-md text-sm font-semibold">
+      <div className="shell flex flex-wrap items-center justify-between gap-x-4 py-1.5 lg:flex-nowrap">
+        <Link href="/" className="gradient-text order-1 inline-flex min-h-11 items-center rounded-md text-sm font-semibold">
           Evaluation platform
         </Link>
-        <div className="flex flex-wrap items-center justify-end gap-2">
-        <nav aria-label="Primary" className="flex flex-wrap justify-end gap-x-1">
+        <div className="order-2 lg:order-3">
+          <ThemeToggle />
+        </div>
+        <nav
+          aria-label="Primary"
+          className="order-3 -mx-4 flex w-[calc(100%+2rem)] gap-x-1 overflow-x-auto whitespace-nowrap px-3 [scrollbar-width:none] lg:order-2 lg:mx-0 lg:ml-auto lg:w-auto lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden"
+        >
           {links.map((link) => {
             const current = pathname === link.href;
             return (
@@ -33,7 +38,7 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 aria-current={current ? "page" : undefined}
-                className={`inline-flex min-h-11 items-center rounded-md px-2 text-sm transition-colors ${
+                className={`inline-flex min-h-11 shrink-0 items-center rounded-md px-2.5 text-sm transition-colors ${
                   current ? "border-b-2 border-accent font-semibold text-ink" : "text-muted hover:bg-wash hover:text-ink"
                 }`}
               >
@@ -42,8 +47,6 @@ export function Nav() {
             );
           })}
         </nav>
-        <ThemeToggle />
-        </div>
       </div>
     </header>
   );
