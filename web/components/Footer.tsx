@@ -2,7 +2,7 @@ import { GITHUB_URL } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="on-dark mt-20 bg-navy text-white">
+    <footer className="on-dark mt-20 bg-gradient-to-r from-[#2a1d73] via-[#3b2a99] to-[#0f5f59] text-white">
       <div className="shell flex items-center justify-between gap-4 py-8">
         <p className="text-sm leading-6">An independent portfolio project · © 2026 Shahil</p>
         <a href={GITHUB_URL} aria-label="GitHub" className="inline-flex h-11 w-11 items-center justify-center rounded-full hover:bg-white/10">

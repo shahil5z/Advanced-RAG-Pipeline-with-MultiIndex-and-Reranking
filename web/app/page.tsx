@@ -30,9 +30,9 @@ export default function HomePage() {
   return (
     <div className="shell space-y-10 py-10 sm:py-14">
       <header className="grid items-center gap-8 lg:grid-cols-[auto_minmax(0,1fr)]">
-        <img src="/logo.png" alt="Project logo" width={200} height={200} className="h-40 w-40 border border-line bg-card sm:h-48 sm:w-48" />
+        <img src="/logo.png" alt="Project logo" width={200} height={200} className="h-40 w-40 rounded-2xl border border-line bg-card p-2 shadow-lift ring-4 ring-violet/20 sm:h-48 sm:w-48" />
         <div className="max-w-2xl">
-          <h1 className="text-4xl text-balance sm:text-5xl">Advanced RAG Evaluation Platform</h1>
+          <h1 className="text-4xl text-balance sm:text-5xl"><span className="gradient-text">Advanced RAG</span> Evaluation Platform</h1>
           <p className="mt-4 text-lg leading-8 text-muted">A reproducible retrieval and generation evaluation system for document-grounded AI.</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/evaluation" className="btn-primary">
@@ -45,7 +45,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <dl className="grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-4">
+      <dl className="grid gap-px overflow-hidden rounded-xl border border-line bg-line shadow-card sm:grid-cols-4">
         {[
           ["Recall@5", metric(flat.recall_at_k)],
           ["MRR", metric(flat.mrr)],
@@ -54,7 +54,7 @@ export default function HomePage() {
         ].map(([label, value]) => (
           <div key={label} className="bg-card px-4 py-4">
             <dt className="text-sm text-muted">{label}</dt>
-            <dd className="mt-1 font-serif text-2xl tabular-nums">{value}</dd>
+            <dd className="mt-1 font-serif text-2xl tabular-nums text-navy dark:text-violet">{value}</dd>
           </div>
         ))}
       </dl>
@@ -73,7 +73,7 @@ export default function HomePage() {
         <h2 className="text-2xl">Engineering capabilities</h2>
         <dl className="mt-4 grid gap-3 sm:grid-cols-2">
           {capabilities.map(([name, detail]) => (
-            <div key={name} className="border border-line bg-card px-4 py-3">
+            <div key={name} className="tile px-4 py-3">
               <dt className="font-semibold">{name}</dt>
               <dd className="mt-1 text-sm leading-6 text-muted">{detail}</dd>
             </div>
