@@ -142,10 +142,10 @@ export function Demo({ questions }: { questions: string[] }) {
   return (
     <div className="shell space-y-8 py-10 sm:py-14">
       <header className="max-w-2xl space-y-3">
-        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-accent">Live retrieval</p>
-        <h1 className="text-4xl text-balance sm:text-5xl">Ask the lab notes</h1>
+        <p className="text-sm font-semibold text-muted">Prepared demonstration</p>
+        <h1 className="text-4xl text-balance sm:text-5xl">Question, passages, ranking, citations</h1>
         <p className="text-base leading-7 text-muted">
-          Choose an index, set how many passages to keep, and compare the vector order with BM25. Prepared questions have a labeled page, so the response includes Recall@k and reciprocal rank.
+          Public mode runs a small in-process approximation in this Next.js app. It is not the local FastAPI and Qdrant stack. Prepared questions have a labeled page, so the response can show Recall@k and reciprocal rank.
         </p>
       </header>
 

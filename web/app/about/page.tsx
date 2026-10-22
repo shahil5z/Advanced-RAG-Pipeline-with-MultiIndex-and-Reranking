@@ -1,62 +1,67 @@
 import type { Metadata } from "next";
-
-import { GITHUB_URL } from "@/lib/site";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "How the local FAISS pipeline and the public Vercel demo fit together.",
+  description: "Purpose, method, limitations, and the public demo boundary.",
 };
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 sm:py-14">
-      <header className="space-y-3">
-        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-accent">Portfolio</p>
-        <h1 className="text-4xl">About</h1>
-        <p className="text-base leading-7 text-muted">
-          A reproducible Python pipeline, a scored benchmark, and a public demo that a reviewer can run.
+    <div className="shell space-y-10 py-10 sm:py-14">
+      <header className="max-w-3xl space-y-3">
+        <h1 className="text-4xl sm:text-5xl">About</h1>
+        <p className="leading-7 text-muted">
+          The project compares retrieval configurations on a fixed, reviewed question set and keeps a regression gate so a later change can fail in public. Generation is optional and measured separately when someone chooses to run it.
         </p>
       </header>
 
-      <section className="space-y-3 text-sm leading-6">
-        <h2 className="text-2xl">Local research stack</h2>
-        <p>
-          PDFs are split into pages, chunked, and embedded with all-MiniLM-L6-v2. Those vectors are not normalized. Flat, HNSW, and IVF indexes are built with FAISS and searched by L2 distance.
-          BM25 reranks the retrieved chunks by their row in the full corpus. OpenAI is the local generator, and the prompt includes the retrieved text. The key is <code className="rounded bg-wash px-1.5 py-0.5">OPENAI_API_KEY</code> from the process environment.
-        </p>
-        <p>
-          Retrieval metrics are page-level Recall, Precision, MRR, nDCG, and citation precision. A drop larger than 0.05 against the stored flat baseline fails <code className="rounded bg-wash px-1.5 py-0.5">ragcheck ci</code>.
-          Optional judge scores are cached and are separate from the stored table.
+      <section className="max-w-3xl space-y-3">
+        <h2 className="text-2xl">Benchmark method</h2>
+        <p className="leading-7 text-muted">
+          Pages are split, embedded with all-MiniLM-L6-v2, and indexed with FAISS Flat, HNSW, and IVF. A hit counts when its document and page are in the golden set. Recall@5, MRR, nDCG, and citation precision are the stored metrics. BM25 reranks dense hits in that run. It does not raise Recall@5.
         </p>
       </section>
 
-      <section className="space-y-3 text-sm leading-6">
-        <h2 className="text-2xl">Public demo</h2>
-        <p>
-          The site is a Next.js app deployed from the <code className="rounded bg-wash px-1.5 py-0.5">web</code> directory. <code className="rounded bg-wash px-1.5 py-0.5">POST /api/query</code> ingests the six lab-note passages, embeds them, runs exact search, and reranks with BM25.
-          Hashed token vectors keep the function small. With an API key, the same route calls OpenAI for embeddings and the answer. The key stays on the server.
-        </p>
-        <p>
-          The benchmark PDFs are used for the local run. The public corpus is a short note written for the site, so the demo does not depend on redistributing those reports.
+      <section className="max-w-3xl space-y-3">
+        <h2 className="text-2xl">Stack</h2>
+        <p className="leading-7 text-muted">
+          Python for the library and FastAPI. Next.js for the public site. FAISS for the benchmark. Qdrant for a local persistent store. OpenTelemetry, Jaeger, and Prometheus for local traces. GitHub Actions for the gates. Vercel hosts only the site.
         </p>
       </section>
 
-      <section className="space-y-3 text-sm leading-6">
-        <h2 className="text-2xl">Limits worth knowing</h2>
-        <ul className="list-disc space-y-2 pl-5">
-          <li>Forty questions and one clean source report, plus a distractor PDF whose OCR was not used to write questions.</li>
-          <li>A page label is wider than a single sentence, so a hit can be relevant and still be a coarse citation.</li>
-          <li>IVF with 100 lists is undertrained on 1,177 vectors. The score is for this corpus.</li>
-          <li>The stored table does not grade generated answers. OpenAI output is not deterministic.</li>
-          <li>Index latency here is a few milliseconds. It is not a scaling result.</li>
-        </ul>
+      <section className="max-w-3xl space-y-3">
+        <h2 className="text-2xl">Public demo boundary</h2>
+        <p className="leading-7 text-muted">
+          The demo is a prepared demonstration. The page calls POST /api/query inside this app. That route searches six lab-note passages with hashed token vectors, or text you paste for a single request. It does not call the FastAPI service, Qdrant, or the benchmark index. Calling it a live API would misstate that.
+        </p>
       </section>
 
-      <p>
-        <a className="btn-primary" href={GITHUB_URL}>
-          View on GitHub
-        </a>
-      </p>
+      <section className="max-w-3xl space-y-3">
+        <h2 className="text-2xl">Local deployment</h2>
+        <p className="leading-7 text-muted">
+          Compose and the k8s/ manifests are local. Readiness is GET /ready. Liveness is GET /health. The API reads the generation key from the environment only when generation is enabled. docs/LOCAL.md has the commands.
+        </p>
+      </section>
+
+      <section className="max-w-3xl space-y-3">
+        <h2 className="text-2xl">Limitations</h2>
+        <p className="leading-7 text-muted">
+          Hybrid retrieval, model comparison, and generation cost are not yet measured. IVF is undertrained for this corpus size. The rate limiter is in-process. There is no authentication. Do not describe the system as production-ready.
+        </p>
+      </section>
+
+      <section className="max-w-3xl space-y-3">
+        <h2 className="text-2xl">EU and GDPR notes</h2>
+        <p className="leading-7 text-muted">
+          Data minimization, server-side secrets, no raw prompt logging by default, traceability, human oversight, transparency, configurable retention, and care with personal data are engineering choices in this demo. They are not legal advice and they are not a compliance certification. The longer note is docs/eu-ai-act-gdpr.md.
+        </p>
+        <p>
+          <Link href="/de" className="text-sm font-semibold underline">
+            Kurzfassung auf Deutsch
+          </Link>
+        </p>
+      </section>
     </div>
   );
 }

@@ -18,7 +18,7 @@ export default function ReferencePage() {
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-accent">HTTP</p>
         <h1 className="text-4xl sm:text-5xl">Query API</h1>
         <p className="text-base leading-7 text-muted">
-          <code className="rounded bg-wash px-1.5 py-0.5">POST /api/query</code> searches the lab notes, or passages you send with the request. Nothing you paste is stored.
+          <code className="rounded bg-wash px-1.5 py-0.5">POST /api/query</code> is the public in-browser approximation over the lab notes, or passages you send with the request. It is not the local FastAPI service. Nothing you paste is stored.
         </p>
       </header>
 

@@ -27,26 +27,26 @@ const serif = localFont({
   adjustFontFallback: "Times New Roman",
 });
 
-const description = "An advanced RAG pipeline that compares FAISS Flat, HNSW, and IVF, reranks with BM25, and scores Recall@k, MRR, and nDCG.";
+const description = "A reproducible retrieval and generation evaluation system for document-grounded AI.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "RAG Evaluation Lab",
-    template: "%s · RAG Evaluation Lab",
+    default: "Advanced RAG Evaluation Platform",
+    template: "%s · Advanced RAG Evaluation Platform",
   },
   description,
   openGraph: {
-    title: "RAG Evaluation Lab",
+    title: "Advanced RAG Evaluation Platform",
     description,
     url: SITE_URL,
-    siteName: "RAG Evaluation Lab",
+    siteName: "Advanced RAG Evaluation Platform",
     type: "website",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "RAG Evaluation Lab logo with the title Multi-index retrieval and reranking." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "RAG Evaluation Lab",
+    title: "Advanced RAG Evaluation Platform",
     description,
     images: ["/og.png"],
   },
@@ -70,6 +70,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Nav />
+        <p className="border-b border-line bg-white px-4 py-2 text-center text-sm leading-6 text-muted">
+          Public mode shows prepared results in the browser. Local engineering mode adds FastAPI, Qdrant, OpenTelemetry, and Kubernetes on your machine.
+        </p>
         <main id="content">{children}</main>
         <Footer />
       </body>

@@ -1,0 +1,23 @@
+{
+  "status": "measured",
+  "note": "Local service latency. External model latency is not included.",
+  "method": "scripts/load_smoke.py on 127.0.0.1, 30 requests, concurrency 4. The sample raised the in-process limit to 1000 per minute so the run was not cut off. The default limiter remains 30 per minute. No model was called.",
+  "health": {
+    "requests": 30,
+    "concurrency": 4,
+    "error_rate": 0.0,
+    "rps": 332.3228282319897,
+    "p50_ms": 2.504894000594504,
+    "p95_ms": 72.20800499999314,
+    "p99_ms": 72.24394900003972
+  },
+  "retrieve": {
+    "requests": 30,
+    "concurrency": 4,
+    "error_rate": 0.0,
+    "rps": 836.8411856242186,
+    "p50_ms": 4.389521999655699,
+    "p95_ms": 6.217652000486851,
+    "p99_ms": 7.270924999829731
+  }
+}
