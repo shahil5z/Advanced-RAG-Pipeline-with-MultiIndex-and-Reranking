@@ -83,7 +83,7 @@ h3 {
   }
 
   .btn {
-    @apply inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm font-semibold transition-colors;
+    @apply inline-flex min-h-11 items-center justify-center rounded-md px-5 text-sm font-semibold transition-colors;
   }
 
   .btn-primary {
@@ -103,6 +103,6 @@ h3 {
   }
 
   .panel {
-    @apply rounded-2xl border border-line bg-card shadow-card;
+    @apply rounded-lg border border-line bg-card shadow-card;
   }
 }

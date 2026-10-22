@@ -19,6 +19,12 @@ class Chunk:
     page: int
     text: str
     corpus_index: int
+    filename: str = ""
+    section: str | None = None
+
+    @property
+    def stored_filename(self) -> str:
+        return self.filename or self.document_id
 
 
 @dataclass(frozen=True)

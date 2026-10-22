@@ -1,0 +1,5 @@
+dense_top_k: 20
+bm25_top_k: 20
+fusion: rrf
+rrf_k: 60
+final_top_k: 5

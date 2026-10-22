@@ -1,0 +1,10 @@
+# Operator-configured USD per 1,000,000 tokens.
+# Replace the rates before a run. They are not a measured bill.
+# Model names are validated against the account at runtime. Do not assume they exist.
+models:
+  - name: gpt-4.1-mini
+    input_per_million_usd: 0.40
+    output_per_million_usd: 1.60
+  - name: gpt-4.1
+    input_per_million_usd: 2.00
+    output_per_million_usd: 8.00

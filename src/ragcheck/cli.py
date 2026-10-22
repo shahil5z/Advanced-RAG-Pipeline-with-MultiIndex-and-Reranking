@@ -66,7 +66,8 @@ def _init(path: Path) -> int:
 
 
 def _build_dataset(path: str) -> int:
-    rows, digest = load_dataset(path)
+    # Local JSONL loader, not a model download.
+    rows, digest = load_dataset(path)  # nosec B615
     print(f"{len(rows)} questions, dataset id {digest}.")
     print("Questions were reviewed from the diabetes report. This command does not generate new ones.")
     return 0

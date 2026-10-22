@@ -1,0 +1,169 @@
+{
+  "experiment": "flat_baseline",
+  "questions": 40,
+  "failures": [
+    {
+      "id": "q02",
+      "question": "How many adults were estimated to be living with diabetes in 2014?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 5
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 20
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.5,
+      "mrr": 0.5,
+      "ndcg": 0.38685280723454163,
+      "category": "partial_page_coverage",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    },
+    {
+      "id": "q03",
+      "question": "How did the age-standardized global prevalence of diabetes change from 1980 to the figure given for the adult population?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 5
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "category": "retrieval_miss",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    },
+    {
+      "id": "q05",
+      "question": "How many additional deaths in 2012 were attributed to higher-than-optimal blood glucose?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 5
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 20
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.5,
+      "mrr": 0.3333333333333333,
+      "ndcg": 0.3065735963827292,
+      "category": "partial_page_coverage",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    },
+    {
+      "id": "q09",
+      "question": "Where does the report say basic blood glucose testing should be available?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 6
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 46
+        },
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 47
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.3333333333333333,
+      "mrr": 0.3333333333333333,
+      "ndcg": 0.23463936301137822,
+      "category": "partial_page_coverage",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    },
+    {
+      "id": "q11",
+      "question": "What does the report say people with type 1 diabetes require daily?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 10
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "category": "retrieval_miss",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    },
+    {
+      "id": "q18",
+      "question": "What fasting plasma glucose value does the report give as the diagnostic criterion for diabetes?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 20
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "category": "retrieval_miss",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    },
+    {
+      "id": "q33",
+      "question": "What does the WHO Global NCD Action Plan 2013-2020 set out, according to the prevention section?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 42
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "category": "retrieval_miss",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    },
+    {
+      "id": "q36",
+      "question": "Which glucose-lowering medicines does the report say are on the WHO Model list of essential medicines?",
+      "expected_pages": [
+        {
+          "document_id": "Global report on diabetes.pdf",
+          "page": 51
+        }
+      ],
+      "retrieved_pages": null,
+      "recall_at_k": 0.0,
+      "mrr": 0.0,
+      "ndcg": 0.0,
+      "category": "retrieval_miss",
+      "likely_cause": "The stored flat_baseline run recorded page-level metrics for this question but did not record retrieved pages. A finer cause (semantic miss, lexical mismatch, wrong document, wrong page, chunk boundary, distractor, or metadata filter) cannot be assigned without that evidence.",
+      "mitigation": "Persist retrieved document ids and pages on the next evaluation run, then classify the miss from the stored pages.",
+      "evidence": "flat_baseline page-level metrics only. Retrieved pages were not stored."
+    }
+  ],
+  "retrieval_misses": 5,
+  "partial_page_coverage": 3,
+  "note": "Retrieved pages were not stored, so semantic, lexical, document, page, boundary, distractor, and filter categories were not assigned."
+}

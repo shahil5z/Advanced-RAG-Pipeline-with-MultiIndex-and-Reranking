@@ -7,6 +7,8 @@ The same seed does not make HNSW identical across FAISS builds or machines.
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 
 from advanced_rag.config import RAGConfig
@@ -22,6 +24,7 @@ def build_faiss_index(vectors: np.ndarray, config: RAGConfig):
     if matrix.ndim != 2 or matrix.shape[0] == 0:
         raise ValueError("Cannot build an index from an empty embedding matrix.")
     dimension = matrix.shape[1]
+    index: Any
 
     if config.index_type == "flat":
         index = faiss.IndexFlatL2(dimension)

@@ -7,6 +7,7 @@ so results do not carry a machine-specific directory.
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any, Sequence
 
 from advanced_rag.models import PageText
 
@@ -20,7 +21,7 @@ def load_pdf(path: str | Path) -> list[PageText]:
     except ImportError as exc:
         raise RuntimeError("PyMuPDF is required to read PDFs.") from exc
 
-    document = pymupdf.open(pdf_path)
+    document: Any = pymupdf.open(pdf_path)
     try:
         return [
             PageText(document_id=pdf_path.name, page=number, text=page.get_text("text") or "")
@@ -30,7 +31,7 @@ def load_pdf(path: str | Path) -> list[PageText]:
         document.close()
 
 
-def load_pdfs(paths: list[str | Path]) -> list[PageText]:
+def load_pdfs(paths: Sequence[str | Path]) -> list[PageText]:
     if not paths:
         raise ValueError("No PDF paths were configured.")
     names = [Path(path).name for path in paths]

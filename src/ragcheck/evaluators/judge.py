@@ -78,7 +78,7 @@ def _parse_scores(content: str) -> dict:
         data = json.loads(text)
     except json.JSONDecodeError as exc:
         raise RuntimeError("The judge did not return JSON.") from exc
-    scores = {}
+    scores: dict[str, float | str] = {}
     for field in _FIELDS:
         value = data.get(field)
         if not isinstance(value, (int, float)) or not 0 <= float(value) <= 1:
