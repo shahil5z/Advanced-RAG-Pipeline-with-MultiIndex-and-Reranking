@@ -2,7 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-padding-top: 5.5rem;
+}
+
 body {
-  background: #f6f5f2;
-  color: #1c1b19;
+  background: #f3f0e8;
+  color: #1c1915;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 2px solid #1c1915;
+  outline-offset: 3px;
+}
+
+::selection {
+  background: #d5e4da;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center rounded-md px-4 text-sm font-semibold;
+  }
+
+  .btn-primary {
+    @apply btn bg-pine text-cream hover:bg-pine-dark disabled:opacity-60;
+  }
+
+  .btn-ghost {
+    @apply btn border border-line bg-card text-ink hover:bg-paper;
+  }
 }

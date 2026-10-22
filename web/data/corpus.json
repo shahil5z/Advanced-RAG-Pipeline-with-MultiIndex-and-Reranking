@@ -1,0 +1,29 @@
+{
+  "document": "lab-notes.pdf",
+  "pages": [
+    {
+      "page": 0,
+      "text": "The lab Flat index compares a query vector with every stored vector and returns the smallest L2 distances."
+    },
+    {
+      "page": 1,
+      "text": "The lab HNSW index uses a graph. Each node keeps 32 neighbors. Construction uses efConstruction 40."
+    },
+    {
+      "page": 2,
+      "text": "The lab IVF index splits vectors into 100 lists. A query searches 10 of those lists."
+    },
+    {
+      "page": 3,
+      "text": "BM25 reranking scores a retrieved chunk by its row in the full corpus. A higher BM25 score is ordered first."
+    },
+    {
+      "page": 4,
+      "text": "Recall counts a retrieved chunk as relevant when its document and page were labeled in the golden file."
+    },
+    {
+      "page": 5,
+      "text": "The public demo does not call OpenAI. Local generation sends the retrieved chunk text to the configured OpenAI model."
+    }
+  ]
+}

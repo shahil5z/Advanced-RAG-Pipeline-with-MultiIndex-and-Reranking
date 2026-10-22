@@ -1,21 +1,61 @@
+import type { Metadata } from "next";
+
+import { GITHUB_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "How the local FAISS pipeline and the public Vercel demo fit together.",
+};
+
 export default function AboutPage() {
   return (
-    <div className="space-y-4 text-sm leading-6">
-      <h1 className="text-2xl font-semibold">About</h1>
+    <div className="max-w-3xl space-y-8">
+      <header className="space-y-4">
+        <h1 className="text-4xl">About</h1>
+        <div className="flex items-center gap-4">
+          <img src="/logo.png" alt="Project mark reading AI RAGCHECK" width={96} height={96} className="h-24 w-24 rounded-md" />
+          <p className="text-base leading-7 text-muted">
+            Shahil built this as a portfolio of retrieval work: a reproducible Python pipeline, a scored benchmark, and a public demo that a reviewer can run.
+          </p>
+        </div>
+      </header>
+
+      <section className="space-y-3 text-sm leading-6">
+        <h2 className="text-2xl">Local research stack</h2>
+        <p>
+          PDFs are split into pages, chunked, and embedded with all-MiniLM-L6-v2. Those vectors are not normalized. Flat, HNSW, and IVF indexes are built with FAISS and searched by L2 distance.
+          BM25 reranks the retrieved chunks by their row in the full corpus. OpenAI is the local generator, and the prompt includes the retrieved text. The key is <code className="rounded bg-mist px-1.5 py-0.5">OPENAI_API_KEY</code> from the process environment.
+        </p>
+        <p>
+          Retrieval metrics are page-level Recall, Precision, MRR, nDCG, and citation precision. A drop larger than 0.05 against the stored flat baseline fails <code className="rounded bg-mist px-1.5 py-0.5">ragcheck ci</code>.
+          Optional judge scores are cached and are separate from the stored table.
+        </p>
+      </section>
+
+      <section className="space-y-3 text-sm leading-6">
+        <h2 className="text-2xl">Public demo</h2>
+        <p>
+          The site is a Next.js app deployed from the <code className="rounded bg-mist px-1.5 py-0.5">web</code> directory. <code className="rounded bg-mist px-1.5 py-0.5">POST /api/query</code> ingests the six lab-note passages, embeds them, runs exact search, and reranks with BM25.
+          Hashed token vectors keep the function small. With an API key, the same route calls OpenAI for embeddings and the answer. The key stays on the server.
+        </p>
+        <p>
+          The benchmark PDFs are used for the local run. The public corpus is a short note written for the site, so the demo does not depend on redistributing those reports.
+        </p>
+      </section>
+
+      <section className="space-y-3 text-sm leading-6">
+        <h2 className="text-2xl">Limits worth knowing</h2>
+        <ul className="list-disc space-y-2 pl-5">
+          <li>Forty questions and one clean source report, plus a distractor PDF whose OCR was not used to write questions.</li>
+          <li>A page label is wider than a single sentence, so a hit can be relevant and still be a coarse citation.</li>
+          <li>IVF with 100 lists is undertrained on 1,177 vectors. The score is for this corpus.</li>
+          <li>The stored table does not grade generated answers. OpenAI output is not deterministic.</li>
+          <li>Index latency here is a few milliseconds. It is not a scaling result.</li>
+        </ul>
+      </section>
+
       <p>
-        The project extracts a multi-index RAG pipeline from an older notebook and evaluates retrieval instead of judging it from one example query.
-      </p>
-      <p>
-        PDFs are split into pages, chunked, and embedded with all-MiniLM-L6-v2. Flat, HNSW, and IVF indexes are built with FAISS. BM25 can rerank the retrieved chunks. OpenAI is the only generation provider, and it receives the retrieved text. The public site does not call OpenAI.
-      </p>
-      <p>
-        Retrieval metrics are page-level Recall, Precision, MRR, nDCG, and citation precision. A drop larger than 0.05 against the stored flat baseline fails `ragcheck ci`. Judge scores, when a key is present, are cached and are not treated as ground truth.
-      </p>
-      <p>
-        The local benchmark uses the two project PDFs. Their redistribution rights are not established, so the public demo uses a separate short text written for this site. The science PDF was not used to write questions because its extracted text is unreliable OCR.
-      </p>
-      <p>
-        <a className="underline" href="https://github.com/shahil5z/Advanced-RAG-Pipeline-with-MultiIndex-and-Reranking">
+        <a className="font-semibold text-pine underline decoration-pine/40 underline-offset-4" href={GITHUB_URL}>
           View source on GitHub
         </a>
       </p>
