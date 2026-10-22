@@ -2,7 +2,10 @@ import { CHUNK_OVERLAP, CHUNK_SIZE, MAX_CHUNKS } from "./limits";
 import type { PdfChunk, PdfPage } from "./types";
 
 export function cleanText(text: string): string {
-  return text.replace(/\u0000/g, "").replace(/[ \t]+/g, " ").replace(/\s*\n\s*/g, "\n").trim();
+  return text
+    .replace(/\u0000/g, "")
+    .replace(/(\p{L})[-\u00ad]\s*\n\s*(\p{Ll})/gu, "$1$2")
+    .replace(/[\u2000-\u200b\u202f]/g, " ").replace(/[ \t]+/g, " ").replace(/\s*\n\s*/g, "\n").trim();
 }
 
 export function chunkPages(pages: PdfPage[], size = CHUNK_SIZE, overlap = CHUNK_OVERLAP, limit = MAX_CHUNKS): PdfChunk[] {

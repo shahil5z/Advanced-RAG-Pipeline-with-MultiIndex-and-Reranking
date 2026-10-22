@@ -89,7 +89,6 @@ assert.equal(parseQuery({ question: "x", passages: [] }).ok, false);
 assert.equal(parseQuery({ question: "x", passages: ["one", "two"] }).ok, true);
 
 async function queryShape() {
-  if (process.env.OPENAI_API_KEY) return;
   const response = await runQuery({ question: cases[0][0], reranking: true, topK: 3, indexType: "flat" });
   assert.equal(response.metrics.labeled, true);
   assert.equal(response.metrics.recall_at_k, 1);

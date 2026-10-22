@@ -2,7 +2,8 @@ import demo from "../../data/demo.json";
 
 import { getChunks, searchDetailed } from "./engine";
 import type { Hit } from "./engine";
-import { cachedDocumentVectors, embedTexts, generateAnswer, OPENAI_EMBEDDING_MODEL, OPENAI_GENERATION_MODEL } from "./openai";
+import { emptyUsage, priceUsage } from "../openai/client";
+import { embedTexts, generateAnswer, labNoteVectors, OPENAI_EMBEDDING_MODEL, OPENAI_GENERATION_MODEL } from "./openai";
 import type { QueryMetrics, QueryResponse, RetrievedChunk } from "./types";
 
 const labels = new Map<string, number[]>(
@@ -70,32 +71,30 @@ export async function runQuery(input: {
   topK: number;
   indexType?: QueryResponse["configuration"]["index_type"];
   passages?: string[];
+  live?: boolean;
 }): Promise<QueryResponse> {
   const custom = Boolean(input.passages && input.passages.length > 0);
-  // The lab-note demo stays on hashed vectors unless DEMO_QUERY_OPENAI=1, so the
-  // server key is spent only by the rate-limited PDF routes.
-  const apiKey = custom || process.env.DEMO_QUERY_OPENAI !== "1" ? "" : (process.env.OPENAI_API_KEY?.trim() ?? "");
+  const live = Boolean(input.live);
+  const usage = emptyUsage();
   let embeddingMode: QueryResponse["embedding_mode"] = "hashing";
-  let notice: string | null = custom ? "Pasted passages are embedded for this request only and are not stored." : null;
+  let embeddingCached = false;
+  const notice: string | null = custom ? "Pasted passages are embedded for this request only and are not stored." : null;
   let queryVector: number[] | undefined;
   let documentVectors: number[][] | undefined;
 
   const embedStarted = performance.now();
-  if (apiKey) {
-    try {
-      documentVectors = await cachedDocumentVectors(
-        apiKey,
-        getChunks().map((chunk) => chunk.text),
-      );
-      const [embedded] = await embedTexts(apiKey, [input.question]);
-      queryVector = embedded;
-      embeddingMode = "openai";
-    } catch (error) {
-      console.error("OpenAI embeddings failed", error instanceof Error ? error.message : "unknown");
-      notice = "OpenAI embeddings were unavailable, so this answer uses the local hashing index.";
-      queryVector = undefined;
-      documentVectors = undefined;
+  if (live) {
+    if (custom) {
+      const vectors = await embedTexts([...(input.passages ?? []), input.question], usage);
+      queryVector = vectors.pop();
+      documentVectors = vectors;
+    } else {
+      const lab = await labNoteVectors(getChunks().map((chunk) => chunk.text), usage);
+      embeddingCached = lab.cached;
+      documentVectors = lab.vectors;
+      [queryVector] = await embedTexts([input.question], usage);
     }
+    embeddingMode = "openai";
   }
   const embedMs = performance.now() - embedStarted;
 
@@ -105,7 +104,7 @@ export async function runQuery(input: {
     reranking: input.reranking,
     indexType: input.indexType ?? "flat",
     queryVector,
-    documentVectors: custom ? undefined : documentVectors,
+    documentVectors,
     passages: input.passages,
   });
 
@@ -120,22 +119,16 @@ export async function runQuery(input: {
   let answerMode: QueryResponse["answer_mode"] = "extractive";
   let generationMs = 0;
 
-  if (apiKey && embeddingMode === "openai" && result.hits.length > 0) {
+  if (live && result.hits.length > 0) {
     const generationStarted = performance.now();
-    try {
-      answer = await generateAnswer(
-        apiKey,
-        promptFor(
-          input.question,
-          result.hits.map((hit) => hit.chunk),
-        ),
-      );
-      answerMode = "openai";
-    } catch (error) {
-      console.error("OpenAI generation failed", error instanceof Error ? error.message : "unknown");
-      const generationNotice = "OpenAI generation was unavailable, so the answer is the top passage.";
-      notice = notice ? `${notice} ${generationNotice}` : generationNotice;
-    }
+    answer = await generateAnswer(
+      promptFor(
+        input.question,
+        result.hits.map((hit) => hit.chunk),
+      ),
+      usage,
+    );
+    answerMode = "openai";
     generationMs = performance.now() - generationStarted;
   }
 
@@ -163,6 +156,8 @@ export async function runQuery(input: {
     },
     rerank_changed_order: result.vectorHits.map((hit) => hit.chunk.chunk_id).join("\n") !== result.rerankedHits.map((hit) => hit.chunk.chunk_id).join("\n"),
     notice,
+    usage: priceUsage(usage),
+    embedding_cached: embeddingCached,
     configuration: {
       index_type: result.indexType,
       index_note: result.note,

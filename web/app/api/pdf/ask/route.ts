@@ -1,4 +1,5 @@
 import { EMBEDDING_DIMENSIONS, MAX_CHUNK_CHARS, MAX_CHUNKS, MAX_QUESTION_CHARS } from "@/lib/pdf/limits";
+import { errorStatus, hasKey, MissingKeyError } from "@/lib/openai/client";
 import { answerQuestion } from "@/lib/pdf/pipeline";
 import { checkQuota, limitResponse, quotaHeaders } from "@/lib/pdf/quota";
 import type { IndexedChunk } from "@/lib/pdf/types";
@@ -13,6 +14,7 @@ function bad(message: string, status = 400): Response {
 }
 
 export async function POST(request: Request) {
+  if (!hasKey()) return bad(new MissingKeyError().message, 503);
   const quota = checkQuota(request);
   if (!quota.allowed) return limitResponse(quota);
   let body: { question?: unknown; chunks?: unknown; rerank?: unknown };
@@ -48,7 +50,8 @@ export async function POST(request: Request) {
     const used = quota.commit();
     return Response.json({ ...result, remaining: used.remaining, limit: used.limit }, { headers: quotaHeaders(used) });
   } catch (caught) {
-    console.error("pdf ask failed", caught instanceof Error ? caught.message : "unknown");
-    return bad("The answer could not be generated.", 502);
+    const mapped = errorStatus(caught);
+    console.error("pdf ask failed", caught instanceof Error ? caught.name : "unknown");
+    return bad(mapped?.message ?? "The answer could not be generated.", mapped?.status ?? 502);
   }
 }

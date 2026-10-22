@@ -1,5 +1,5 @@
 import { MAX_PART_BYTES, MAX_PDF_BYTES } from "@/lib/pdf/limits";
-import { extractPages } from "@/lib/pdf/pipeline";
+import { extractPages, PdfReadError } from "@/lib/pdf/pipeline";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -26,8 +26,8 @@ export async function POST(request: Request) {
     const result = await extractPages(buffer, offset);
     return Response.json(result, { headers: { "Cache-Control": "no-store" } });
   } catch (caught) {
-    if (caught instanceof RangeError) return error(caught.message, 413);
+    if (caught instanceof PdfReadError) return error(caught.message, caught.status);
     console.error("pdf extract failed", caught instanceof Error ? caught.name : "unknown");
-    return error("The PDF could not be read. It may be encrypted or damaged.", 422);
+    return error("The PDF could not be read. It may be damaged.", 422);
   }
 }

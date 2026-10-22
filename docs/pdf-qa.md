@@ -21,4 +21,15 @@ Estimated from token usage and list prices (text-embedding-3-small 0.02 USD per 
 
 ## Configuration
 
-OPENAI_API_KEY is a server-only, sensitive environment variable in the Vercel project. It is never sent to the browser. The lab-note demo at /api/query stays on hashed vectors unless DEMO_QUERY_OPENAI=1 is set.
+OPENAI_API_KEY is a server-only, sensitive environment variable in the Vercel project. It is never sent to the browser. The lab-note demo at /api/query also runs live on OpenAI and counts against the same daily limit. When the key is missing, every live route returns HTTP 503 with a clear message.
+
+## Robustness
+
+- Password-protected and damaged files return a clear 422 message. Encrypted files above 3 MB cannot be split in the browser and get their own message.
+- PDFs without a text layer (scanned images) are detected after extraction and rejected before any OpenAI call, without using a test.
+- BM25 tokenizes Unicode letters and numbers, and splits Chinese, Japanese and Korean runs into character bigrams, so non-English documents rank lexically. Suggestions follow the document language and answers follow the question language.
+- OpenAI calls time out after 25 seconds and retry up to three times on HTTP 429 and 5xx, honouring Retry-After.
+
+## Live numbers
+
+Every timing, token count and cost in a live result is measured for that request: split time in the browser, server extract time, embedding, retrieval, rerank and generation latency, token usage from the provider's usage field, and cost from that usage times the list price.

@@ -1,4 +1,6 @@
 import { parseQuery } from "@/lib/rag/request";
+import { errorStatus, hasKey } from "@/lib/openai/client";
+import { checkQuota, limitResponse, quotaHeaders } from "@/lib/pdf/quota";
 import { runQuery } from "@/lib/rag/query";
 
 export const runtime = "nodejs";
@@ -24,7 +26,7 @@ export async function GET() {
   return Response.json({
     ok: true,
     corpus: "lab-notes.pdf",
-    openai_configured: Boolean(process.env.OPENAI_API_KEY?.trim()),
+    openai_configured: hasKey(),
   });
 }
 
@@ -35,6 +37,12 @@ export async function POST(request: Request) {
       { status: 429, headers: { "Cache-Control": "no-store" } },
     );
   }
+
+  if (!hasKey()) {
+    return Response.json({ error: "The live demo is not configured on this server: OPENAI_API_KEY is missing." }, { status: 503 });
+  }
+  const quota = checkQuota(request);
+  if (!quota.allowed) return limitResponse(quota);
 
   let body: unknown;
   try {
@@ -56,10 +64,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await runQuery(parsed.value);
-    return Response.json(result, { headers: { "Cache-Control": "no-store" } });
+    const result = await runQuery({ ...parsed.value, live: true });
+    const used = quota.commit();
+    return Response.json({ ...result, remaining: used.remaining, limit: used.limit }, { headers: quotaHeaders(used) });
   } catch (error) {
-    console.error("query failed", error instanceof Error ? error.message : "unknown");
-    return Response.json({ error: "The query could not be completed." }, { status: 500 });
+    const mapped = errorStatus(error);
+    console.error("query failed", error instanceof Error ? error.name : "unknown");
+    return Response.json({ error: mapped?.message ?? "The query could not be completed." }, { status: mapped?.status ?? 500 });
   }
 }

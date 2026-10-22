@@ -39,7 +39,7 @@ export default function ArchitecturePage() {
             ["API", "GET /health, GET /ready, GET /version, POST /query, POST /retrieve, POST /evaluate."],
             ["Stores", "Memory for tests, FAISS for the benchmark shape, Qdrant when QDRANT_URL is set."],
             ["Events", "SQLite rows with tokens, latency, status, and error type. Prompts are off unless enabled."],
-            ["Public route", "POST /api/query in the Next.js app. Hashed vectors over six lab notes, or pasted text for one request."],
+            ["Public route", "POST /api/query and /api/pdf/* in the Next.js app. Live OpenAI embeddings and gpt-4o-mini answers over six lab notes, pasted text, or an uploaded PDF, limited to 15 tests per browser per day."],
           ].map(([name, detail]) => (
             <div key={name} className="border border-line bg-card px-4 py-3">
               <dt className="font-semibold">{name}</dt>

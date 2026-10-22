@@ -5,7 +5,7 @@ const stages = [
   },
   {
     title: "Embed",
-    body: "Encode with MiniLM locally, or hashed tokens on the public site.",
+    body: "Encode with MiniLM locally, or text-embedding-3-small on the public site.",
   },
   {
     title: "Index",

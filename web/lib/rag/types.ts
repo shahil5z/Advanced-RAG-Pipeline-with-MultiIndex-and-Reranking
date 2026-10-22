@@ -34,6 +34,10 @@ export type QueryResponse = {
   };
   rerank_changed_order: boolean;
   notice: string | null;
+  usage: { embedding_tokens: number; input_tokens: number; output_tokens: number; estimated_cost_usd: number };
+  embedding_cached: boolean;
+  remaining?: number;
+  limit?: number;
   configuration: {
     index_type: PublicIndex;
     index_note: string;

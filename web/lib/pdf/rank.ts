@@ -1,4 +1,23 @@
-import { tokenize } from "../rag/engine";
+const STOP = new Set(
+  "a an and are as at be by for from has have in is it its of on or that the this to was were which with what how when where who why does did do".split(" "),
+);
+const CJK = /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/u;
+
+// Unicode-aware tokens so BM25 works for non-English text. CJK runs become character bigrams.
+export function tokenize(text: string): string[] {
+  const out: string[] = [];
+  for (const match of text.toLowerCase().normalize("NFKC").matchAll(/[\p{L}\p{N}]+/gu)) {
+    const word = match[0];
+    if (CJK.test(word)) {
+      const chars = [...word];
+      if (chars.length === 1) out.push(word);
+      for (let index = 0; index < chars.length - 1; index += 1) out.push(chars[index] + chars[index + 1]);
+    } else if (!STOP.has(word)) {
+      out.push(word);
+    }
+  }
+  return out;
+}
 
 export function bm25Scores(query: string, texts: string[], k1 = 1.5, b = 0.75): number[] {
   const docs = texts.map((text) => tokenize(text));

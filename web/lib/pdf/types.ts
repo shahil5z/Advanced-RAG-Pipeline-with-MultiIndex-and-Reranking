@@ -30,7 +30,10 @@ export type IndexResponse = {
   pages: number;
   chunks: IndexedChunk[];
   suggestions: string[];
+  last_indexed_page: number;
+  chunk_limit_reached: boolean;
   usage: Usage;
+  latency_ms: { chunk: number; embed: number; suggest: number };
   remaining: number;
   limit: number;
 };
@@ -42,7 +45,7 @@ export type AskResponse = {
   passages: PdfPassage[];
   reranked: boolean;
   usage: Usage;
-  latency_ms: { retrieve: number; rerank: number; generate: number };
+  latency_ms: { embed: number; retrieve: number; rerank: number; generate: number };
   remaining: number;
   limit: number;
 };
