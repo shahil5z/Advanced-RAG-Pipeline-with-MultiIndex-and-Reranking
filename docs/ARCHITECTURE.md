@@ -2,7 +2,7 @@
 
 ## Local research
 
-`notebooks/2_assignment.ipynb` loaded two PDFs, split them, embedded them with `all-MiniLM-L6-v2`, and built Flat L2, HNSW (`M=32`, `efConstruction=40`), and IVF (`nlist=100`, `nprobe=10`). It timed one query and treated L2 distance as the score. BM25 used the position in the result list because the chunks had no id. The calls that wrote the DOCX files did not receive the retrieved text. The other notebook is a separate Pinecone exercise. Those notebooks are history. They are not the supported path.
+The original research notebook (since removed) loaded two PDFs, split them, embedded them with `all-MiniLM-L6-v2`, and built Flat L2, HNSW (`M=32`, `efConstruction=40`), and IVF (`nlist=100`, `nprobe=10`). It timed one query and treated L2 distance as the score. BM25 used the position in the result list because the chunks had no id. The calls that wrote the DOCX files did not receive the retrieved text. That notebook is history and is not the supported path.
 
 `src/advanced_rag` keeps the splitter defaults and the three index settings. Configuration supplies paths. Chunk ids are `{filename}:p{page}:c{n}`. BM25 scores `corpus_index`, which is the FAISS row. `OpenAIGenerator` is the only generator. The prompt includes the retrieved chunks. The key is `OPENAI_API_KEY` from the process environment. The package does not load a dotenv file.
 
