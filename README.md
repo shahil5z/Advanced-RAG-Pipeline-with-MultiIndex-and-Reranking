@@ -1,59 +1,87 @@
-# Advanced RAG Evaluation Lab
+<p align="center">
+  <img src="web/public/logo.png" alt="Advanced RAG Pipeline Logo" width="200" />
+</p>
 
-A local multi-index RAG pipeline and evaluation tool (`ragcheck`), measured on 40 reviewed questions.
+<h1 align="center">Advanced RAG Pipeline with Multi-Index and Reranking</h1>
 
-## What this project is
+<p align="center">
+  A local multi-index RAG pipeline that loads PDFs, chunks them, embeds them with HuggingFace sentence-transformers,
+  searches FAISS indexes (Flat, HNSW, IVF), reranks results with BM25, and generates answers via OpenAI.
+</p>
 
-A local RAG pipeline that loads PDFs, chunks them, embeds them with `all-MiniLM-L6-v2`, and searches FAISS indexes (Flat, HNSW, IVF). BM25 reranking is supported. OpenAI generates answers from retrieved context. An evaluation tool (`ragcheck`) scores retrieval against a golden dataset of 40 reviewed questions.
+<p align="center">
+  <a href="https://www.python.org/"><img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" /></a>
+  <a href="https://github.com/facebookresearch/faiss"><img alt="FAISS" src="https://img.shields.io/badge/FAISS-multi--index-13293d" /></a>
+  <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"><img alt="Sentence-Transformers" src="https://img.shields.io/badge/sentence--transformers-HuggingFace-24A1E3" /></a>
+  <a href="https://openai.com/"><img alt="OpenAI" src="https://img.shields.io/badge/OpenAI-LLM-74AA9C?logo=openai&logoColor=white" /></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-9a541f" /></a>
+</p>
 
-## Problem solved
+---
 
-Evaluates how different retrieval configurations affect page-level recall and citation quality on a documented benchmark, enabling comparison of vector indexes with and without lexical reranking.
+## Project Overview
 
-## Core pipeline
+This project implements a complete Retrieval-Augmented Generation (RAG) pipeline for local document processing and question answering.
+
+**What it does:** Loads PDF documents, extracts text per page, splits content into semantic chunks, generates vector embeddings using `all-MiniLM-L6-v2`, indexes them with FAISS using three different strategies (Flat, HNSW, IVF), benchmarks retrieval performance, applies BM25 reranking to improve result quality, and generates grounded answers via OpenAI's language model.
+
+**Why it exists:** The project demonstrates how different FAISS index types affect retrieval speed and accuracy on a documented benchmark, and how BM25 lexical reranking can improve result ordering without changing coverage.
+
+## Pipeline Overview
 
 ```text
-PDF pages
-    → Chunking ( RecursiveCharacterTextSplitter, 1000/200 )
-    → Embedding ( all-MiniLM-L6-v2, sentence-transformers )
-    → One FAISS index ( Flat / HNSW / IVF )
-        → Optional BM25 reranking
-            → OpenAI generation (gpt-4.1-mini)
-                → QueryResult with citations
+PDF Documents
+      ↓
+Document Extraction (pymupdf)
+      ↓
+Semantic Chunking (RecursiveCharacterTextSplitter, 1000/200)
+      ↓
+Embedding (all-MiniLM-L6-v2 via sentence-transformers)
+      ↓
+FAISS Vector Indexing
+ ┌──────┼──────┐
+ ↓      ↓      ↓
+Flat   HNSW   IVF
+ └──────┴──────┘
+      ↓
+Retrieval Benchmarking
+      ↓
+BM25 Reranking (rank-bm25)
+      ↓
+Prompt Construction
+      ↓
+LLM Generation (OpenAI gpt-4.1-mini)
+      ↓
+DOCX Report Output
 ```
 
-## Key capabilities
+## Core Components
 
-- Multi-index retrieval: Flat (exact L2), HNSW (approximate), IVF (inverted file)
-- BM25 reranking to reorder retrieved chunks by lexical relevance
-- Configurable chunking (size 1000, overlap 200, sentence-level boundaries)
-- Page-level evaluation with Recall@5, Precision@5, MRR, nDCG, citation precision
-- Matrix benchmarking via `ragcheck` CLI (four configurations compared automatically)
-- OpenAI-powered generation with grounded, context-constrained answers
+| Component | Technology | Purpose |
+|---|---|---|
+| PDF Ingestion | `pymupdf` | Extracts text per page from PDF documents |
+| Chunking | `langchain-text-splitters` | Splits text into overlapping chunks (1000/200) |
+| Embeddings | `sentence-transformers` | Generates vectors with `all-MiniLM-L6-v2` |
+| Vector Search | `faiss-cpu` | Flat, HNSW, and IVF index types |
+| Reranking | `rank-bm25` | BM25 lexical reranking of retrieved chunks |
+| Generation | OpenAI `gpt-4.1-mini` | LLM answers grounded in retrieved context |
+| Evaluation | `ragcheck` CLI | Benchmarks recall, MRR, nDCG, citation precision |
 
-## Technology stack
+## Multi-Index Retrieval
 
-| Layer | Technology |
-|---|---|
-| PDF ingestion | `pymupdf`, `langchain-text-splitters` |
-| Embedding | `sentence-transformers` (all-MiniLM-L6-v2) |
-| Vector search | `faiss-cpu` (Flat, HNSW, IVF) |
-| Lexical reranking | `rank-bm25` |
-| Generation | OpenAI `gpt-4.1-mini` (via `openai` SDK) |
-| Evaluation | `pytest`, custom metrics (Recall, MRR, nDCG, citation precision) |
-| CLI | `ragcheck` (argument-driven matrix runner) |
+The pipeline supports three FAISS index types, each with different trade-offs:
 
-## How the pipeline works
+- **Flat:** Exact L2 distance search. Baseline for accuracy comparison.
+- **HNSW:** Hierarchical Navigable Small World graph. Approximate nearest neighbor with configurable M and efConstruction.
+- **IVF:** Inverted File Index. Quantization-based indexing with nlist/nprobe parameters.
 
-1. **Load** PDFs via `pymupdf` (extracts text per page)
-2. **Chunk** pages recursively (preserving page labels)
-3. **Embed** chunks with `all-MiniLM-L6-v2` (sentence-transformers, no normalization)
-4. **Build** a FAISS index (configurable type: flat / hnsw / ivf)
-5. **Rerank** top-k results with BM25 (if enabled)
-6. **Generate** answer with OpenAI, grounded in retrieved chunks
-7. **Score** retrieval using `ragcheck` against `data/golden/diabetes.jsonl` (40 questions)
+## BM25 Reranking
 
-## Benchmark results
+BM25 lexical reranking is applied after vector retrieval to reorder results by lexical relevance. This improves mean reciprocal rank (MRR) and nDCG by moving more relevant pages higher in the result list, without changing Recall@5 coverage.
+
+## Benchmark Results
+
+Evaluated on 40 reviewed questions against `Global report on diabetes.pdf`, with `Understanding_Science.pdf` as a distractor document.
 
 1,177 chunks, chunk size 1,000, overlap 200, top-5, seed 42, Python 3.13.15, `all-MiniLM-L6-v2`.
 
@@ -64,60 +92,147 @@ PDF pages
 | HNSW, reranking on | 0.833 | 0.779 | 0.784 | 0.229 | 5.5 ms |
 | IVF, reranking on | 0.796 | 0.754 | 0.755 | 0.217 | 5.5 ms |
 
-**Interpretation:** BM25 changed retrieval order without affecting coverage (Recall@5 stayed at 0.833). HNSW matched Flat on all metrics. IVF with `nlist=100` and `nprobe=10` is undertrained for 1,177 vectors (FAISS warning).
+**Key finding:** BM25 changes retrieval order, not coverage. Recall@5 stays at 0.833 with or without reranking. HNSW matches Flat on all metrics with minimal latency difference.
 
-## How to run
+## Report Samples
 
-```bash
-# Install package (with OpenAI for generation)
-python -m pip install -e ".[dev,openai]"
+Sample DOCX reports generated from LLM responses:
 
-# Build dataset from golden questions (read-only, does not invent questions)
-ragcheck build-dataset
+<p align="center">
+  <img src="IMG/Report%201.png" alt="Report Sample 1" width="500" />
+</p>
 
-# Run the experiment matrix and write results JSON
-ragcheck run --matrix experiments/default.yaml
+<p align="center">
+  <img src="IMG/Report%202.png" alt="Report Sample 2" width="500" />
+</p>
 
-# Run CI check (fails if any metric drops >0.05 from baseline)
-ragcheck ci --current results/experiments/latest.json --baseline results/baseline.json --name hnsw
-
-# Run the full pipeline on a query (requires OPENAI_API_KEY)
-python -c "
-from advanced_rag.config import RAGConfig
-from advanced_rag.pipeline import RAGPipeline
-config = RAGConfig.from_dict({'embedding_model': 'all-MiniLM-L6-v2', 'index_type': 'flat', 'reranking': True, 'generation_model': 'gpt-4.1-mini', 'temperature': 0.5, 'input_paths': ['Global report on diabetes.pdf']})
-pipe = RAGPipeline(config)
-result = pipe.query('What does the document say about symptoms?')
-print(result.answer)
-print([c.chunk_id for c in result.retrieved_chunks])
-"
-```
-
-## Project structure
+## Project Structure
 
 ```text
-src/advanced_rag/           pipeline (chunking, embeddings, indexes, reranking, retrieval, generation)
-src/ragcheck/               CLI, matrix runner, comparison, reports
-data/golden/                40 reviewed questions (diabetes.jsonl)
-data/demo/                  short public note (lab-notes.pdf)
-results/                    stored benchmark (experiments/latest.json, baseline.json)
-web/                        Next.js demo (serves prepared traces, no Python process needed)
-docs/ARCHITECTURE.md        detailed architecture description
-notebooks/                  original research notebooks
+Advanced-RAG-Pipeline-with-MultiIndex-and-Reranking/
+├── IMG/
+│   ├── Report 1.png          # Sample LLM-generated DOCX report
+│   └── Report 2.png          # Sample LLM-generated DOCX report
+├── web/public/
+│   └── logo.png              # Project logo
+├── notebooks/
+│   ├── 1_rag_NOTEBOOK.ipynb  # Original RAG notebook
+│   └── 2_assignment.ipynb    # Assignment implementation notebook
+├── src/
+│   ├── advanced_rag/         # Core RAG pipeline package
+│   │   ├── chunking/         # Document chunking logic
+│   │   ├── embeddings/       # Sentence-transformer embedding
+│   │   ├── generation/       # OpenAI LLM generation
+│   │   ├── indexes/          # FAISS index builders
+│   │   ├── ingestion/        # PDF loading and extraction
+│   │   ├── pipeline/         # Pipeline orchestration
+│   │   ├── reranking/        # BM25 reranking
+│   │   └── retrieval/        # FAISS vector search
+│   └── ragcheck/             # Evaluation CLI tool
+│       ├── cli.py            # Command-line interface
+│       ├── compare.py        # Result comparison
+│       └── runners/          # Matrix experiment runner
+├── data/
+│   ├── golden/               # 40 reviewed questions (diabetes.jsonl)
+│   └── demo/                 # Demo note (lab-notes.pdf)
+├── results/                  # Stored benchmark results
+├── docs/                     # Architecture and decision records
+├── Global report on diabetes.pdf  # Primary input document
+├── Understanding_Science.pdf      # Distractor input document
+├── medical_report.docx       # Generated output report
+├── science_report.docx       # Generated output report
+├── requirements.txt          # Python dependencies
+├── config.example.yaml       # Example pipeline configuration
+├── .env.example              # Example environment variables
+├── LICENSE                   # MIT License
+└── README.md                 # This file
+```
+
+## Installation
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/shahil5z/Advanced-RAG-Pipeline-with-MultiIndex-and-Reranking.git
+cd Advanced-RAG-Pipeline-with-MultiIndex-and-Reranking
+pip install -r requirements.txt
+```
+
+## Configuration
+
+Copy the example environment file and add your API key:
+
+```bash
+cp .env.example .env
+```
+
+**Required environment variable:**
+
+| Variable | Description |
+|---|---|
+| `OPENAI_API_KEY` | OpenAI API key for LLM generation (read from process environment) |
+
+The `.env.example` file contains placeholder values only. Do not commit real credentials.
+
+## Usage
+
+### Run the notebooks
+
+Two Jupyter notebooks demonstrate the full pipeline:
+
+1. `1_rag_NOTEBOOK.ipynb` — Original RAG research notebook
+2. `2_assignment.ipynb` — Assignment implementation with full RAG setup
+
+### Run the evaluation CLI
+
+```bash
+# Build and validate the golden dataset
+ragcheck build-dataset
+
+# Run the experiment matrix and write results
+ragcheck run --matrix experiments/default.yaml
+
+# Compare results against baseline
+ragcheck ci --current results/experiments/latest.json --baseline results/baseline.json --name hnsw
+```
+
+### Run the pipeline programmatically
+
+```python
+from advanced_rag.config import RAGConfig
+from advanced_rag.pipeline import RAGPipeline
+
+config = RAGConfig.from_dict({
+    "embedding_model": "all-MiniLM-L6-v2",
+    "index_type": "flat",
+    "reranking": True,
+    "generation_model": "gpt-4.1-mini",
+    "temperature": 0.5,
+    "input_paths": ["Global report on diabetes.pdf"],
+})
+
+pipe = RAGPipeline(config)
+result = pipe.query("What does the document say about symptoms?")
+print(result.answer)
+print([c.chunk_id for c in result.retrieved_chunks])
 ```
 
 ## Limitations
 
-- Forty questions and one clean source report; results may not generalize
+- Benchmark evaluated on 40 questions against one clean source report; results may not generalize
 - Page labels span wider than a single sentence
-- IVF (`nlist=100`) is undertrained for 1,177 vectors (FAISS warning)
-- OpenAI generation is not deterministic; scores were not part of this benchmark
+- IVF (`nlist=100`) is undertrained for 1,177 vectors (FAISS training warning)
+- OpenAI generation is non-deterministic; scores were not part of this benchmark
 - Index latency on this corpus is not a scaling result
-- Source PDFs are for local runs only; this project does not claim they can be redistributed
-- No production URL or hosted deployment has been created from this repository
+- Source PDFs are for local runs only; redistribution is not claimed
+- The public web demo (`web/`) uses prepared traces and does not embed source PDFs
 
-## References
+## Author
 
-- Architecture: `docs/ARCHITECTURE.md`
-- Notebooks: `notebooks/1_rag_NOTEBOOK.ipynb`, `notebooks/2_assignment.ipynb`
-- Live site: `web/` (Next.js, serves prepared traces from `data/demo/lab-notes.pdf`; does not embed PDFs, rebuild FAISS, or call OpenAI)
+Shahil Haque
+
+GitHub: [shahil5z](https://github.com/shahil5z)
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
