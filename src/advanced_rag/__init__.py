@@ -1,6 +1,5 @@
 """Local multi-index RAG pipeline.
 
-The notebooks at the repository root are the original research record.
 This package is the supported way to run the pipeline.
 """
 
