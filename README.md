@@ -120,8 +120,9 @@ Estimated total OpenAI spend for this benchmark, including judging: $0.114.
 
 ## Author
 
-**Shohrab Haque Shahil**
-GitHub: [shahil5z](https://github.com/shahil5z)
+Designed and developed by **Shohrab Haque Shahil**
+
+[LinkedIn](https://www.linkedin.com/in/shohrab-haque) 
 
 ## License
 
